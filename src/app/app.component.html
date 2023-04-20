@@ -1,0 +1,17 @@
+<form [formGroup]="form" (submit)="onSubmit()">
+  <h3>Registro:</h3>
+  <div>
+    <input formControlName="nombre" type="text" placeholder="nombre" />
+  </div>
+  <div>
+    <input formControlName="clave" type="password" placeholder="Contraseña" />
+  </div>
+  <div>
+    <input
+      formControlName="clave2"
+      type="password"
+      placeholder="Contraseña Repetida"
+    />
+  </div>
+  <button [disabled]="!form.valid">Registrarse</button>
+</form>
