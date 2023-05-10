@@ -4,8 +4,14 @@ import { CabeceraComponent } from 'src/app/components/cabecera/cabecera.componen
 import { ReactiveFormsModule } from '@angular/forms';
 import { InicioSesionComponent } from 'src/app/components/inicio-sesion/inicio-sesion.component';
 import { RegistroComponent } from 'src/app/components/registro/registro.component';
+import { NotificacionComponent } from 'src/app/components/notificacion/notificacion.component';
 
-const triviale = [CabeceraComponent, InicioSesionComponent, RegistroComponent];
+const triviale = [
+  CabeceraComponent,
+  InicioSesionComponent,
+  RegistroComponent,
+  NotificacionComponent,
+];
 const angular = [ReactiveFormsModule];
 
 @NgModule({
