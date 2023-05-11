@@ -1,2 +1,7 @@
 <app-cabecera></app-cabecera> <app-notificacion></app-notificacion>
-{{ usuario | json }}
+<button type="button" class="btn btn-primary btn-lg" (click)="onJugar()">
+  Jugar
+</button>
+<main class="container">
+  <router-outlet></router-outlet>
+</main>

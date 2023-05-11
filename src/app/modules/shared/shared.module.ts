@@ -12,10 +12,10 @@ const triviale = [
   RegistroComponent,
   NotificacionComponent,
 ];
-const angular = [ReactiveFormsModule];
+const angular = [CommonModule, ReactiveFormsModule];
 
 @NgModule({
-  imports: [CommonModule, ...angular],
+  imports: [...angular],
   declarations: [...triviale],
   exports: [...angular, ...triviale],
 })

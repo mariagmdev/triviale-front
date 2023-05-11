@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth/auth.service';
 import { Usuario } from './models/usuario/usuario';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,13 @@ import { Usuario } from './models/usuario/usuario';
 })
 export class AppComponent implements OnInit {
   usuario?: Usuario;
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.authService.usuario$.subscribe((usuario) => (this.usuario = usuario));
+  }
+
+  onJugar(): void {
+    this.router.navigateByUrl('/jugar');
   }
 }

@@ -1,0 +1,34 @@
+<ng-container *ngIf="preguntas[indexPreguntaActual]">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6 text-center">
+          <h5>Pregunta {{ indexPreguntaActual + 1 }}/{{ preguntas.length }}</h5>
+        </div>
+        <div class="col-3 text-end">
+          <h5>Puntuación: {{ puntuacion }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h2>
+    {{ indexPreguntaActual + 1 }}. {{ preguntas[indexPreguntaActual].titulo }}
+  </h2>
+  <div class="container">
+    <div class="row g-4">
+      <div
+        *ngFor="let respuesta of preguntas[indexPreguntaActual].respuestas"
+        class="col-6"
+      >
+        <div
+          class="rounded shadow"
+          (click)="onResponder(respuesta.id)"
+          role="button"
+        >
+          {{ respuesta.titulo }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

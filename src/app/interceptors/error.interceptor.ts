@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable, ErrorHandler, NgZone } from '@angular/core';
+import { Injectable, ErrorHandler } from '@angular/core';
 import { NotificacionService } from '../services/notificacion/notificacion.service';
 import { TipoNotificacion } from '../enums/tipo-notificacion/tipo-notificacion';
 
