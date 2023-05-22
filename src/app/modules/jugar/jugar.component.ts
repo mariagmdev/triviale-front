@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Pregunta } from 'src/app/models/pregunta/pregunta';
+import { PreguntaRespondida } from 'src/app/models/pregunta/pregunta-respondida';
 import { PartidaService } from 'src/app/services/partida/partida.service';
 import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
 
@@ -11,7 +12,11 @@ import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
 export class JugarComponent implements OnInit {
   indexPreguntaActual: number;
   preguntas: Pregunta[];
-  puntuacion = 0;
+  puntos = 0;
+  estaPartidaTerminada = false;
+
+  private preguntasRespondidas: PreguntaRespondida[] = [];
+
   constructor(
     private partidaService: PartidaService,
     private preguntaService: PreguntaService
@@ -24,14 +29,20 @@ export class JugarComponent implements OnInit {
     });
   }
 
-  onResponder(idRespuesta: number) {
-    this.preguntaService
-      .validar(this.preguntas[this.indexPreguntaActual].id, idRespuesta)
-      .subscribe((esCorrecta) => {
-        this.indexPreguntaActual++;
-        if (esCorrecta) {
-          this.puntuacion += 10;
-        }
-      });
+  onResponder(preguntaRespondida: PreguntaRespondida) {
+    this.preguntasRespondidas.push(preguntaRespondida);
+    if (this.indexPreguntaActual < this.preguntas.length - 1) {
+      this.indexPreguntaActual++;
+      if (preguntaRespondida.esCorrecta) {
+        this.puntos += 10;
+      }
+    } else {
+      this.estaPartidaTerminada = true;
+      this.partidaService
+        .crearPuntuacion(this.preguntasRespondidas)
+        .subscribe((puntos) => {
+          this.puntos = puntos;
+        });
+    }
   }
 }

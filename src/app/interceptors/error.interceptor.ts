@@ -8,10 +8,7 @@ export class ErrorInterceptor implements ErrorHandler {
   constructor(private notificacionService: NotificacionService) {}
 
   handleError(error: any) {
-    // Check if it's an error from an HTTP response
-    if (!(error instanceof HttpErrorResponse)) {
-      error = error.rejection; // get the error object
-    }
+    console.error(error);
 
     const mensaje = error?.error?.mensaje || 'Error inesperado';
     this.notificacionService.mostrar({

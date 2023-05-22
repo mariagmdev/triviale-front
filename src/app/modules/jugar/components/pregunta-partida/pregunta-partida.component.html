@@ -1,0 +1,16 @@
+<ng-container *ngIf="pregunta">
+  <h2>{{ indexPregunta + 1 }}. {{ pregunta.titulo }}</h2>
+  <div class="container">
+    <div class="row g-4">
+      <div *ngFor="let respuesta of pregunta.respuestas" class="col-6">
+        <div
+          class="rounded shadow"
+          (click)="onResponder(respuesta.id)"
+          role="button"
+        >
+          {{ respuesta.titulo }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

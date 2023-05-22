@@ -1,0 +1,19 @@
+<h2 class="text-center">
+  Enhorabuena, has acabado la partida tienes un total de {{ puntos }} puntos
+</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="text-center">Posición</th>
+      <th class="text-center">Usuario</th>
+      <th class="text-center">Puntuación</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let usuario of usuarioPuntuaciones; index as i">
+      <td class="text-center">{{ i + 1 }}</td>
+      <td class="text-center">{{ usuario.nombre }}</td>
+      <td class="text-center">{{ usuario.puntos }}</td>
+    </tr>
+  </tbody>
+</table>
