@@ -4,5 +4,5 @@ export interface PreguntaCreacion {
   titulo: string;
   respuestas: RespuestaCreacion[];
   idCategoria: number;
-  esPublica: boolean;
+  categoria?: string;
 }

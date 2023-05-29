@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CabeceraComponent } from 'src/app/components/cabecera/cabecera.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InicioSesionComponent } from 'src/app/components/inicio-sesion/inicio-sesion.component';
 import { RegistroComponent } from 'src/app/components/registro/registro.component';
 import { NotificacionComponent } from 'src/app/components/notificacion/notificacion.component';
@@ -12,7 +12,7 @@ const triviale = [
   RegistroComponent,
   NotificacionComponent,
 ];
-const angular = [CommonModule, ReactiveFormsModule];
+const angular = [CommonModule, ReactiveFormsModule, FormsModule];
 
 @NgModule({
   imports: [...angular],

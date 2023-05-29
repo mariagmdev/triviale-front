@@ -17,7 +17,6 @@ export class NotificacionComponent implements OnInit {
   ) {
     this.notificacionService.notificacion.subscribe((notificacion) => {
       this.notificacion = notificacion;
-      console.log('subscribe', this.notificacion);
       this.cdr.detectChanges();
     });
   }

@@ -6,9 +6,10 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './modules/shared/shared.module';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { InicioComponent } from './components/inicio/inicio.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, InicioComponent],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule, SharedModule],
   providers: [
     {

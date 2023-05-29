@@ -8,7 +8,6 @@ export class NotificacionService {
   constructor() {}
 
   mostrar(notificacion: Notificacion) {
-    console.log('mostrar');
     this.notificacion.next(notificacion);
   }
   ocultar() {
