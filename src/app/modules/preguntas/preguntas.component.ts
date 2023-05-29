@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PreguntaRevision } from 'src/app/models/pregunta/pregunta-revision';
+import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
 
 @Component({
   selector: 'app-preguntas',
@@ -6,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./preguntas.component.scss'],
 })
 export class PreguntasComponent implements OnInit {
-  constructor() {}
+  preguntas: PreguntaRevision[];
+  constructor(private preguntaService: PreguntaService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.preguntaService.listar().subscribe((preguntas) => {
+      this.preguntas = preguntas;
+      console.log(preguntas);
+    });
+  }
 }

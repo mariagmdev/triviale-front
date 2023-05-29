@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PreguntaCreacion } from 'src/app/models/pregunta/pregunta-creacion';
+import { PreguntaRevision } from 'src/app/models/pregunta/pregunta-revision';
 
 @Injectable({ providedIn: 'root' })
 export class PreguntaService {
@@ -22,5 +23,9 @@ export class PreguntaService {
       ...pregunta,
       crear: true,
     });
+  }
+
+  listar(): Observable<PreguntaRevision[]> {
+    return this.http.get<PreguntaRevision[]>(`${this.api}/preguntas.php`);
   }
 }

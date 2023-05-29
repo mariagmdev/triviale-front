@@ -1,3 +1,14 @@
-<p>
-  preguntas works!
-</p>
+<table>
+  <tr>
+    <th>Título</th>
+    <th>Categoría</th>
+    <th>Pública</th>
+    <th>Opciones</th>
+  </tr>
+  <tr *ngFor="let pregunta of preguntas">
+    <td>{{ pregunta.titulo }}</td>
+    <td>{{ pregunta.nombreCategoria }}</td>
+    <td>{{ pregunta.esPublica }}</td>
+    <td></td>
+  </tr>
+</table>
