@@ -1,3 +1,4 @@
+<app-preguntas-editar [id]="idPreguntaSeleccionada"></app-preguntas-editar>
 <table>
   <tr>
     <th>Título</th>
@@ -9,6 +10,9 @@
     <td>{{ pregunta.titulo }}</td>
     <td>{{ pregunta.nombreCategoria }}</td>
     <td>{{ pregunta.esPublica }}</td>
-    <td></td>
+    <td>
+      <button (click)="alternarVisibilidad(pregunta)">Visibilidad</button>
+      <button (click)="onEditar(pregunta.id)">Editar</button>
+    </td>
   </tr>
 </table>

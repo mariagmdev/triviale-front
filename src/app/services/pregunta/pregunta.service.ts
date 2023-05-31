@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PreguntaCreacion } from 'src/app/models/pregunta/pregunta-creacion';
 import { PreguntaRevision } from 'src/app/models/pregunta/pregunta-revision';
+import { PreguntaEdicion } from 'src/app/models/pregunta/pregunta-edicion';
 
 @Injectable({ providedIn: 'root' })
 export class PreguntaService {
@@ -27,5 +28,24 @@ export class PreguntaService {
 
   listar(): Observable<PreguntaRevision[]> {
     return this.http.get<PreguntaRevision[]>(`${this.api}/preguntas.php`);
+  }
+
+  obtener(id: number): Observable<PreguntaEdicion> {
+    return this.http.get<PreguntaEdicion>(`${this.api}/preguntas.php?id=${id}`);
+  }
+
+  modificar(id: number, pregunta: PreguntaEdicion): Observable<void> {
+    return this.http.put<void>(`${this.api}/preguntas.php?id=${id}`, {
+      ...pregunta,
+      modificar: true,
+    });
+  }
+
+  establecerVisibilidad(id: number, esPublica: boolean): Observable<void> {
+    return this.http.patch<void>(`${this.api}/preguntas.php`, {
+      id: id,
+      esPublica: esPublica,
+      visibilidad: true,
+    });
   }
 }

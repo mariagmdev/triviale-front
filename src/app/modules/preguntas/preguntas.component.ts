@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { TipoNotificacion } from 'src/app/enums/tipo-notificacion/tipo-notificacion';
 import { PreguntaRevision } from 'src/app/models/pregunta/pregunta-revision';
+import { NotificacionService } from 'src/app/services/notificacion/notificacion.service';
 import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
 
 @Component({
@@ -9,12 +11,31 @@ import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
 })
 export class PreguntasComponent implements OnInit {
   preguntas: PreguntaRevision[];
-  constructor(private preguntaService: PreguntaService) {}
+  idPreguntaSeleccionada: number;
+  constructor(
+    private preguntaService: PreguntaService,
+    private notificacionService: NotificacionService
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.preguntaService.listar().subscribe((preguntas) => {
       this.preguntas = preguntas;
-      console.log(preguntas);
     });
+  }
+
+  alternarVisibilidad(pregunta: PreguntaRevision): void {
+    this.preguntaService
+      .establecerVisibilidad(pregunta.id, !pregunta.esPublica)
+      .subscribe(() => {
+        this.notificacionService.mostrar({
+          mensaje: 'Visibilidad establecida',
+          tipo: TipoNotificacion.Exito,
+        });
+        pregunta.esPublica = !pregunta.esPublica;
+      });
+  }
+
+  onEditar(id: number): void {
+    this.idPreguntaSeleccionada = id;
   }
 }
