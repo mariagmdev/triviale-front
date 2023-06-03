@@ -9,6 +9,7 @@ import { PartidaService } from 'src/app/services/partida/partida.service';
 })
 export class ResultadoPartidaComponent implements OnInit {
   @Input() puntos: number;
+  @Input() vidasRestantes: number;
 
   usuarioPuntuaciones: UsuarioPuntuacion[];
 

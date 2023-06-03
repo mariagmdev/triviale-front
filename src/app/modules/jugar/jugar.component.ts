@@ -14,6 +14,10 @@ export class JugarComponent implements OnInit {
   preguntas: Pregunta[];
   puntos = 0;
   estaPartidaTerminada = false;
+  vidasRestantes: number = 3;
+  fechaComienzo: number;
+  milisegundos: number = 0;
+  private intervalo: NodeJS.Timer;
 
   private preguntasRespondidas: PreguntaRespondida[] = [];
 
@@ -26,23 +30,41 @@ export class JugarComponent implements OnInit {
     this.partidaService.obtenerPreguntasPartida(1).subscribe((preguntas) => {
       this.preguntas = preguntas;
       this.indexPreguntaActual = 0;
+      this.comenzarContador();
     });
   }
 
-  onResponder(preguntaRespondida: PreguntaRespondida) {
+  onResponder(preguntaRespondida: PreguntaRespondida): void {
     this.preguntasRespondidas.push(preguntaRespondida);
     if (this.indexPreguntaActual < this.preguntas.length - 1) {
       this.indexPreguntaActual++;
       if (preguntaRespondida.esCorrecta) {
         this.puntos += 10;
+      } else {
+        this.vidasRestantes--;
+        if (this.vidasRestantes === 0) {
+          this.terminarPartida();
+        }
       }
     } else {
-      this.estaPartidaTerminada = true;
+      this.terminarPartida();
       this.partidaService
-        .crearPuntuacion(this.preguntasRespondidas)
+        .crearPuntuacion(this.preguntasRespondidas, this.milisegundos / 1000)
         .subscribe((puntos) => {
           this.puntos = puntos;
         });
     }
+  }
+
+  private comenzarContador(): void {
+    this.fechaComienzo = new Date().getTime();
+    this.intervalo = setInterval(() => {
+      this.milisegundos = new Date().getTime() - this.fechaComienzo;
+    }, 1000);
+  }
+
+  private terminarPartida(): void {
+    this.estaPartidaTerminada = true;
+    clearInterval(this.intervalo);
   }
 }

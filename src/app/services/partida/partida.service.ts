@@ -20,9 +20,13 @@ export class PartidaService {
     );
   }
 
-  crearPuntuacion(preguntas: PreguntaRespondida[]): Observable<number> {
+  crearPuntuacion(
+    preguntas: PreguntaRespondida[],
+    tiempoEmpleado: number
+  ): Observable<number> {
     return this.http.post<number>(`${this.api}/puntuaciones.php`, {
       preguntas: preguntas,
+      tiempo: tiempoEmpleado,
       crear: true,
     });
   }

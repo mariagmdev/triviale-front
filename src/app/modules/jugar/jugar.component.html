@@ -4,9 +4,10 @@
   <div class="card">
     <div class="card-body">
       <div class="row">
-        <div class="col-3"></div>
+        <div class="col-3">{{ vidasRestantes }}</div>
         <div class="col-6 text-center">
           <h5>Pregunta {{ indexPreguntaActual + 1 }}/{{ preguntas.length }}</h5>
+          <small>{{ milisegundos | date : "mm:ss" : "UTC" }}</small>
         </div>
         <div class="col-3 text-end">
           <h5>Puntuación: {{ puntos }}</h5>
@@ -23,4 +24,5 @@
 <app-resultado-partida
   *ngIf="estaPartidaTerminada"
   [puntos]="puntos"
+  [vidasRestantes]="vidasRestantes"
 ></app-resultado-partida>
