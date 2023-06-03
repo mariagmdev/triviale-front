@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
@@ -10,7 +11,10 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class InicioSesionComponent implements OnInit {
   form: FormGroup;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private recaptchaV3Service: ReCaptchaV3Service
+  ) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -29,8 +33,16 @@ export class InicioSesionComponent implements OnInit {
   }
 
   onSubmit() {
-    this.authService.iniciarSesion(this.form.value).subscribe(() => {
-      console.log('Trinity estamos dentro');
+    this.recaptchaV3Service.execute('importantAction').subscribe((token) => {
+      this.authService.verificarRecaptcha(token).subscribe((esValido) => {
+        if (esValido) {
+          this.authService.iniciarSesion(this.form.value).subscribe(() => {
+            console.log('Trinity estamos dentro');
+          });
+        } else {
+          alert('Eres un robot.');
+        }
+      });
     });
   }
 }

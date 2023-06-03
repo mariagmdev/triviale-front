@@ -42,4 +42,11 @@ export class AuthService {
     this.usuario$.next(undefined);
     //Redirección a raíz
   }
+
+  verificarRecaptcha(token: string): Observable<boolean> {
+    return this.http.post<boolean>(`${this.api}/recaptcha.php`, {
+      verificar: true,
+      token: token,
+    });
+  }
 }

@@ -14,14 +14,14 @@ export class NotificacionComponent implements OnInit {
   constructor(
     private notificacionService: NotificacionService,
     private cdr: ChangeDetectorRef
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.notificacionService.notificacion.subscribe((notificacion) => {
       this.notificacion = notificacion;
       this.cdr.detectChanges();
     });
   }
-
-  ngOnInit() {}
 
   onCerrar() {
     this.notificacionService.ocultar();

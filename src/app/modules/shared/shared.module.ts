@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InicioSesionComponent } from 'src/app/components/inicio-sesion/inicio-sesion.component';
 import { RegistroComponent } from 'src/app/components/registro/registro.component';
 import { NotificacionComponent } from 'src/app/components/notificacion/notificacion.component';
+import { ReCaptchaV3Service, RecaptchaFormsModule } from 'ng-recaptcha';
 
 const triviale = [
   CabeceraComponent,
@@ -12,11 +13,17 @@ const triviale = [
   RegistroComponent,
   NotificacionComponent,
 ];
-const angular = [CommonModule, ReactiveFormsModule, FormsModule];
+const angular = [
+  CommonModule,
+  ReactiveFormsModule,
+  FormsModule,
+  RecaptchaFormsModule,
+];
 
 @NgModule({
   imports: [...angular],
   declarations: [...triviale],
   exports: [...angular, ...triviale],
+  providers: [ReCaptchaV3Service],
 })
 export class SharedModule {}
