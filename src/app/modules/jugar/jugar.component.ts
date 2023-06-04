@@ -20,6 +20,8 @@ export class JugarComponent implements OnInit {
   fechaComienzo: number;
   milisegundos: number = 0;
   categorias: Categoria[];
+  categoriasSeleccionadas: Categoria[];
+  totalPreguntasPorCategorias: number = 0;
   private intervalo: NodeJS.Timer;
 
   private preguntasRespondidas: PreguntaRespondida[] = [];
@@ -34,11 +36,6 @@ export class JugarComponent implements OnInit {
     this.categoriaService.listarCategoriasPartida().subscribe((categorias) => {
       this.categorias = categorias;
     });
-    // this.partidaService.obtenerPreguntasPartida(1).subscribe((preguntas) => {
-    //   this.preguntas = preguntas;
-    //   this.indexPreguntaActual = 0;
-    //   this.comenzarContador();
-    // });
   }
 
   onResponder(preguntaRespondida: PreguntaRespondida): void {
@@ -62,7 +59,26 @@ export class JugarComponent implements OnInit {
         });
     }
   }
+  onCambioCategorias(categorias: Categoria[]): void {
+    this.totalPreguntasPorCategorias = 0;
+    this.categoriasSeleccionadas = categorias;
+    categorias.forEach((categoria) => {
+      this.totalPreguntasPorCategorias += categoria.cantidadPreguntas!;
+    });
+  }
 
+  onComenzarPartida(): void {
+    const idCategorias = this.categoriasSeleccionadas.map(
+      (categoria) => categoria.id
+    );
+    this.partidaService
+      .obtenerPreguntasPartida(idCategorias)
+      .subscribe((preguntas) => {
+        this.preguntas = preguntas;
+        this.indexPreguntaActual = 0;
+        this.comenzarContador();
+      });
+  }
   private comenzarContador(): void {
     this.fechaComienzo = new Date().getTime();
     this.intervalo = setInterval(() => {

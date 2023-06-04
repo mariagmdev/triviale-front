@@ -1,5 +1,26 @@
-$primary: #f783ff;
-@import "../node_modules/bootstrap/scss/bootstrap";
-.pe-cursor-pointer{
-    cursor: pointer;
+.pe-cursor-pointer {
+  cursor: pointer;
+}
+.w-100 {
+  width: 100%;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.shadow {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-end {
+  text-align: end;
 }

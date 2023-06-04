@@ -14,10 +14,10 @@ export class PartidaService {
 
   constructor(private http: HttpClient) {}
 
-  obtenerPreguntasPartida(idCategoria: number): Observable<Pregunta[]> {
-    return this.http.get<Pregunta[]>(
-      `${this.api}/jugar.php?categoria=${idCategoria}`
-    );
+  obtenerPreguntasPartida(idCategorias: number[]): Observable<Pregunta[]> {
+    return this.http.post<Pregunta[]>(`${this.api}/jugar.php`, {
+      idCategorias: idCategorias,
+    });
   }
 
   crearPuntuacion(

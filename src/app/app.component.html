@@ -1,4 +1,8 @@
-<app-cabecera></app-cabecera> <app-notificacion></app-notificacion>
-<main class="container">
-  <router-outlet></router-outlet>
-</main>
+<app-notificacion></app-notificacion>
+<nz-layout class="layout">
+  <app-cabecera></app-cabecera>
+  <nz-content>
+    <router-outlet></router-outlet>
+  </nz-content>
+  <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+</nz-layout>
