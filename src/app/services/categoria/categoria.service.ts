@@ -13,4 +13,8 @@ export class CategoriaService {
   listar(): Observable<Categoria[]> {
     return this.http.get<Categoria[]>(`${this.api}/categorias.php`);
   }
+
+  listarCategoriasPartida(): Observable<Categoria[]> {
+    return this.http.get<Categoria[]>(`${this.api}/categorias.php?partida`);
+  }
 }

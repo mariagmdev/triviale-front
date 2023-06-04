@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Categoria } from 'src/app/models/categoria/categoria';
 import { Pregunta } from 'src/app/models/pregunta/pregunta';
 import { PreguntaRespondida } from 'src/app/models/pregunta/pregunta-respondida';
+import { CategoriaService } from 'src/app/services/categoria/categoria.service';
 import { PartidaService } from 'src/app/services/partida/partida.service';
 import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
 
@@ -17,21 +19,26 @@ export class JugarComponent implements OnInit {
   vidasRestantes: number = 3;
   fechaComienzo: number;
   milisegundos: number = 0;
+  categorias: Categoria[];
   private intervalo: NodeJS.Timer;
 
   private preguntasRespondidas: PreguntaRespondida[] = [];
 
   constructor(
     private partidaService: PartidaService,
-    private preguntaService: PreguntaService
+    private preguntaService: PreguntaService,
+    private categoriaService: CategoriaService
   ) {}
 
   ngOnInit(): void {
-    this.partidaService.obtenerPreguntasPartida(1).subscribe((preguntas) => {
-      this.preguntas = preguntas;
-      this.indexPreguntaActual = 0;
-      this.comenzarContador();
+    this.categoriaService.listarCategoriasPartida().subscribe((categorias) => {
+      this.categorias = categorias;
     });
+    // this.partidaService.obtenerPreguntasPartida(1).subscribe((preguntas) => {
+    //   this.preguntas = preguntas;
+    //   this.indexPreguntaActual = 0;
+    //   this.comenzarContador();
+    // });
   }
 
   onResponder(preguntaRespondida: PreguntaRespondida): void {
