@@ -8,6 +8,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TipoNotificacion } from 'src/app/enums/tipo-notificacion/tipo-notificacion';
 import { Categoria } from 'src/app/models/categoria/categoria';
 import { PreguntaCreacion } from 'src/app/models/pregunta/pregunta-creacion';
@@ -30,7 +31,8 @@ export class PreguntasCrearComponent implements OnInit {
   constructor(
     private categoriaService: CategoriaService,
     private preguntaService: PreguntaService,
-    private notificacionService: NotificacionService
+    private notificacionService: NotificacionService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -56,9 +58,6 @@ export class PreguntasCrearComponent implements OnInit {
     this.categoriaService.listar().subscribe((categorias) => {
       this.categorias = categorias;
     });
-  }
-  getRespuestasFormArray(): FormArray {
-    return this.form.controls['respuestas'] as FormArray; //no es un cast en este caso, solo es una indicación de su tipo
   }
 
   onCrear(): void {
@@ -95,28 +94,30 @@ export class PreguntasCrearComponent implements OnInit {
         mensaje: 'Pregunta creada correctamente.',
         tipo: TipoNotificacion.Exito,
       });
+      this.router.navigateByUrl('/');
     });
   }
 
   onCambioEsCorrecta(esCorrecta: boolean, i: number): void {
-    this.getRespuestasFormArray().controls.forEach((respuesta) => {
+    const respuestasFormControl = this.form.controls.respuestas;
+    respuestasFormControl.controls.forEach((respuesta) => {
       respuesta.patchValue({ esCorrecta: false });
     });
-    this.getRespuestasFormArray().controls[i].patchValue({
+    respuestasFormControl.controls[i].patchValue({
       esCorrecta: esCorrecta,
     });
     this.form.markAsDirty();
+    this.form.updateValueAndValidity();
   }
 
-  onCambioCategoria(idCategoria: number): void {
-    const catControl = this.form.controls['categoria'];
+  onCambioCategoria(): void {
+    const catControl = this.form.controls.categoria;
+    const idCategoria = this.form.value.idCategoria;
     if (idCategoria === 0) {
       catControl.addValidators(Validators.required);
     } else {
       catControl.removeValidators(Validators.required);
     }
-    this.form.patchValue({ idCategoria: idCategoria });
-    this.form.markAsDirty();
     this.form.updateValueAndValidity();
   }
 

@@ -4,13 +4,10 @@ import { Notificacion } from 'src/app/models/notificacion/notificacion';
 
 @Injectable({ providedIn: 'root' })
 export class NotificacionService {
-  notificacion = new Subject<Notificacion | undefined>();
+  notificacion = new Subject<Notificacion>();
   constructor() {}
 
   mostrar(notificacion: Notificacion) {
     this.notificacion.next(notificacion);
-  }
-  ocultar() {
-    this.notificacion.next(undefined);
   }
 }

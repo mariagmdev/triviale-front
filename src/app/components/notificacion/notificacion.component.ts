@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { TipoNotificacion } from 'src/app/enums/tipo-notificacion/tipo-notificacion';
 import { Notificacion } from 'src/app/models/notificacion/notificacion';
 import { NotificacionService } from 'src/app/services/notificacion/notificacion.service';
@@ -13,17 +14,12 @@ export class NotificacionComponent implements OnInit {
   readonly TipoNotificacion = TipoNotificacion;
   constructor(
     private notificacionService: NotificacionService,
-    private cdr: ChangeDetectorRef
+    private msgService: NzMessageService
   ) {}
 
   ngOnInit() {
     this.notificacionService.notificacion.subscribe((notificacion) => {
-      this.notificacion = notificacion;
-      this.cdr.detectChanges();
+      this.msgService.create(notificacion.tipo as string, notificacion.mensaje);
     });
-  }
-
-  onCerrar() {
-    this.notificacionService.ocultar();
   }
 }

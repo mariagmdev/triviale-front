@@ -32,6 +32,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { RankingComponent } from 'src/app/components/ranking/ranking.component';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 const triviale = [RankingComponent];
 const angular = [
@@ -71,6 +72,7 @@ const ngZorro = [
   NzSpinModule,
   NzDrawerModule,
   NzTabsModule,
+  NzSwitchModule,
 ];
 @NgModule({
   imports: [...angular, ...ngZorro],

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, skip, tap } from 'rxjs';
 import { Usuario } from 'src/app/models/usuario/usuario';
 import { UsuarioInicioSesion } from 'src/app/models/usuario/usuario-login';
@@ -11,8 +12,10 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
   readonly usuario$ = new BehaviorSubject<Usuario | undefined>(undefined);
+
   private readonly api = environment.api;
-  constructor(private http: HttpClient) {
+
+  constructor(private http: HttpClient, private router: Router) {
     this.usuario$.pipe(skip(1)).subscribe((usuario) => {
       if (usuario) {
         localStorage.setItem('usuario-triviale', JSON.stringify(usuario));
@@ -28,8 +31,10 @@ export class AuthService {
     }
   }
 
-  registrar(usuario: UsuarioRegistro): Observable<any> {
-    return this.http.post<any>(`${this.api}/auth.php`, usuario);
+  registrar(usuario: UsuarioRegistro): Observable<Usuario> {
+    return this.http
+      .post<Usuario>(`${this.api}/auth.php`, usuario)
+      .pipe(tap((usuario) => this.usuario$.next(usuario)));
   }
 
   iniciarSesion(usuario: UsuarioInicioSesion): Observable<Usuario> {
@@ -40,7 +45,7 @@ export class AuthService {
 
   cerrarSesion(): void {
     this.usuario$.next(undefined);
-    //Redirección a raíz
+    this.router.navigateByUrl('/');
   }
 
   verificarRecaptcha(token: string): Observable<boolean> {

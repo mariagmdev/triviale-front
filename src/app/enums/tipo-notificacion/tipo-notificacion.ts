@@ -1,4 +1,4 @@
 export enum TipoNotificacion {
-  Exito,
-  Error,
+  Exito = 'success',
+  Error = 'error',
 }
