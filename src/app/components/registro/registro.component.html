@@ -1,4 +1,4 @@
-<div class="modal" id="modal-registro" tabindex="-1">
+<!-- <div class="modal" id="modal-registro" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -23,13 +23,7 @@
             <label for="nombre">Usuario</label>
           </div>
           <div class="form-floating mb-3">
-            <input
-              formControlName="clave"
-              type="password"
-              class="form-control"
-              id="clave"
-              placeholder="Contraseña"
-            />
+
             <label for="clave">Contraseña</label>
           </div>
           <div class="form-floating mb-3">
@@ -42,15 +36,7 @@
             />
             <label for="clave2">Confirmar contraseña</label>
           </div>
-          <div class="text-center">
-            ¿Tienes ya una cuenta?
-            <a
-              class="link-primary pe-cursor-pointer"
-              data-bs-target="#modal-inicio-sesion"
-              data-bs-toggle="modal"
-              >¡Inicia sesión!</a
-            >
-          </div>
+
         </div>
         <div class="modal-footer">
           <button
@@ -68,4 +54,70 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
+<nz-modal
+  [(nzVisible)]="esVisible"
+  nzTitle="Registro"
+  (nzOnCancel)="onCancelar()"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="form">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="user">
+            <input
+              nz-input
+              formControlName="nombre"
+              type="text"
+              class="form-control"
+              placeholder="Usuario"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="lock">
+            <input
+              nz-input
+              formControlName="clave"
+              type="password"
+              class="form-control"
+              placeholder="Contraseña"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="lock">
+            <input
+              nz-input
+              formControlName="clave2"
+              type="password"
+              class="form-control"
+              placeholder="Contraseña"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <div class="text-center">
+        ¿Tienes ya una cuenta?
+        <a class="pe-cursor-pointer" (click)="onAbrirInicioSesion()"
+          >¡Inicia sesión!</a
+        >
+      </div>
+    </form>
+  </ng-container>
+  <ng-container *nzModalFooter>
+    <button nz-button nzType="default" (click)="onCancelar()">Cerrar</button>
+    <button
+      nz-button
+      nzType="primary"
+      (click)="onRegistrarse()"
+      [disabled]="!form.valid"
+    >
+      Registrarse
+    </button>
+  </ng-container>
+</nz-modal>

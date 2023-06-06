@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -8,7 +8,9 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { TipoNotificacion } from 'src/app/enums/tipo-notificacion/tipo-notificacion';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { NotificacionService } from 'src/app/services/notificacion/notificacion.service';
 
 @Component({
   selector: 'app-registro',
@@ -16,11 +18,16 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   styleUrls: ['./registro.component.scss'],
 })
 export class RegistroComponent implements OnInit {
+  @Input() esVisible: boolean;
+  @Output() esVisibleChange = new EventEmitter<boolean>();
+  @Output() abrirInicioSesion = new EventEmitter<void>();
+
   form: FormGroup;
 
   constructor(
     private authService: AuthService,
-    private recaptchaV3Service: ReCaptchaV3Service
+    private recaptchaV3Service: ReCaptchaV3Service,
+    private notificacionService: NotificacionService
   ) {}
 
   ngOnInit(): void {
@@ -43,18 +50,31 @@ export class RegistroComponent implements OnInit {
     );
   }
 
-  onSubmit() {
+  onRegistrarse() {
     this.recaptchaV3Service.execute('importantAction').subscribe((token) => {
       this.authService.verificarRecaptcha(token).subscribe((esValido) => {
         if (esValido) {
           this.authService.registrar(this.form.value).subscribe(() => {
-            console.log('usuario registrado');
+            this.onCancelar();
           });
         } else {
-          alert('Eres un robot.');
+          this.notificacionService.mostrar({
+            mensaje: 'Error en el captcha',
+            tipo: TipoNotificacion.Error,
+          });
         }
       });
     });
+  }
+
+  onCancelar(): void {
+    this.esVisible = false;
+    this.esVisibleChange.emit(this.esVisible);
+  }
+
+  onAbrirInicioSesion(): void {
+    this.onCancelar();
+    this.abrirInicioSesion.emit();
   }
 
   private claveConcuerdanValidator(): ValidatorFn {

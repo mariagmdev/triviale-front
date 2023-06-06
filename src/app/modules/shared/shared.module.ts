@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CabeceraComponent } from 'src/app/components/cabecera/cabecera.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { InicioSesionComponent } from 'src/app/components/inicio-sesion/inicio-sesion.component';
-import { RegistroComponent } from 'src/app/components/registro/registro.component';
-import { NotificacionComponent } from 'src/app/components/notificacion/notificacion.component';
 import { ReCaptchaV3Service, RecaptchaFormsModule } from 'ng-recaptcha';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
@@ -35,13 +31,9 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { RankingComponent } from 'src/app/components/ranking/ranking.component';
 
-const triviale = [
-  CabeceraComponent,
-  InicioSesionComponent,
-  RegistroComponent,
-  NotificacionComponent,
-];
+const triviale = [RankingComponent];
 const angular = [
   CommonModule,
   ReactiveFormsModule,

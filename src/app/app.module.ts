@@ -6,21 +6,37 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './modules/shared/shared.module';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
-import { InicioComponent } from './components/inicio/inicio.component';
 import { RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
 import { environment } from 'src/environments/environment';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { es_ES } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import es from '@angular/common/locales/es';
-import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CabeceraComponent } from './components/cabecera/cabecera.component';
+import { InicioSesionComponent } from './components/inicio-sesion/inicio-sesion.component';
+import { InicioComponent } from './components/inicio/inicio.component';
+import { NotificacionComponent } from './components/notificacion/notificacion.component';
+import { RegistroComponent } from './components/registro/registro.component';
 
 registerLocaleData(es);
 
 @NgModule({
-  declarations: [AppComponent, InicioComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule, SharedModule],
+  declarations: [
+    AppComponent,
+    InicioComponent,
+    CabeceraComponent,
+    InicioSesionComponent,
+    RegistroComponent,
+    NotificacionComponent,
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    SharedModule,
+  ],
   providers: [
     {
       provide: ErrorHandler,

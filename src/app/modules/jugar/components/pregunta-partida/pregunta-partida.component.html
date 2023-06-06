@@ -3,7 +3,7 @@
   <div nz-row class="respuestas" [nzGutter]="[32, 32]">
     <div *ngFor="let respuesta of pregunta.respuestas" nz-col [nzSpan]="12">
       <div
-        class="rounded shadow respuesta"
+        class="rounded shadow respuesta pe-cursor-pointer"
         (click)="onResponder(respuesta.id)"
         role="button"
       >

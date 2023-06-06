@@ -1,0 +1,31 @@
+<nz-table
+  #datosTabla
+  class="ranking"
+  [nzShowPagination]="false"
+  [nzFrontPagination]="false"
+  [nzData]="usuarioPuntuaciones"
+>
+  <thead>
+    <tr>
+      <th nzAlign="center" nzWidth="100px">Posición</th>
+      <th nzAlign="center">Usuario</th>
+      <th nzAlign="center" nzWidth="160px">Puntuación</th>
+      <th nzAlign="center" nzWidth="120px">Tiempo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let usuario of datosTabla.data; index as i">
+      <td nzAlign="center">
+        <span>{{ i + 1 }}</span>
+        <span *ngIf="i === 0">🥇</span>
+        <span *ngIf="i === 1">🥈</span>
+        <span *ngIf="i === 2">🥉</span>
+      </td>
+      <td nzAlign="center">{{ usuario.nombre }}</td>
+      <td nzAlign="center">{{ usuario.puntos }}</td>
+      <td nzAlign="center">
+        {{ usuario.tiempo * 1000 | date : "mm:ss" : "UTC" }}
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

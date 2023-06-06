@@ -1,27 +1,36 @@
-<!-- <header>
-  <button
-    class="btn btn-outline-primary"
-    data-bs-toggle="modal"
-    data-bs-target="#modal-inicio-sesion"
-    title="Inicio sesión"
-  >
-    <i class="bi bi-person-circle"></i>
-  </button>
-  <button
-    class="btn btn-outline-primary"
-    title="Cerrar sesión"
-    (click)="onCerrarSesion()"
-  >
-    <i class="bi bi-person-circle"></i>
-  </button>
-</header>
-<app-inicio-sesion></app-inicio-sesion>
-<app-registro></app-registro> -->
 <nz-header>
-  <div class="logo"></div>
-  <ul nz-menu nzTheme="dark" nzMode="horizontal">
-    <li nz-menu-item>nav 1</li>
-    <li nz-menu-item>nav 2</li>
-    <li nz-menu-item>nav 3</li>
-  </ul>
+  <a class="logo" routerLink="/">
+    <img class="h-100" src="assets/img/logo.png" />
+  </a>
+  <button
+    *ngIf="!usuario"
+    nz-button
+    nz-tooltip
+    nzTooltipTitle="Iniciar sesión/Registro"
+    nzType="default"
+    nzShape="circle"
+    (click)="mostrarInicioSesion = true"
+  >
+    <span nz-icon nzType="user" nzTheme="outline"></span>
+  </button>
+  <div *ngIf="usuario" nz-row [nzGutter]="24">
+    <div nz-col>
+      <span nz-icon nzType="user" nzTheme="outline"></span>
+      <strong> {{ usuario.nombre }}</strong>
+    </div>
+    <div nz-col>
+      <button nz-button nzType="default" (click)="onCerrarSesion()">
+        <span nz-icon nzType="poweroff" nzTheme="outline"></span>
+        Salir
+      </button>
+    </div>
+  </div>
 </nz-header>
+<app-inicio-sesion
+  [(esVisible)]="mostrarInicioSesion"
+  (abrirRegistro)="mostrarRegistro = true"
+></app-inicio-sesion>
+<app-registro
+  [(esVisible)]="mostrarRegistro"
+  (abrirInicioSesion)="mostrarInicioSesion = true"
+></app-registro>

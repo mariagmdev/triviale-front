@@ -1,61 +1,53 @@
-<div class="modal" id="modal-inicio-sesion" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Iniciar sesión</h1>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <form [formGroup]="form" (submit)="onSubmit()">
-        <div class="modal-body">
-          <div class="form-floating mb-3">
+<nz-modal
+  [(nzVisible)]="esVisible"
+  nzTitle="Inicio sesión"
+  (nzOnCancel)="onCancelar()"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="form">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="user">
             <input
+              nz-input
               formControlName="nombre"
               type="text"
               class="form-control"
-              id="nombre"
               placeholder="Usuario"
             />
-            <label for="nombre">Usuario</label>
-          </div>
-          <div class="form-floating mb-3">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="lock">
             <input
+              nz-input
               formControlName="clave"
               type="password"
               class="form-control"
-              id="clave"
               placeholder="Contraseña"
             />
-            <label for="clave">Contraseña</label>
-          </div>
-          <div class="text-center">
-            ¿Aún no tienes cuenta?
-            <a
-              class="link-primary pe-cursor-pointer"
-              data-bs-target="#modal-registro"
-              data-bs-toggle="modal"
-              >¡Regístrate!</a
-            >
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Cancelar
-          </button>
-          <button class="btn btn-primary" [disabled]="!form.valid">
-            <i class="bi bi-box-arrow-in-right"></i>
-            Iniciar sesión
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <div class="text-center">
+        ¿Aún no tienes cuenta?
+        <a class="pe-cursor-pointer" (click)="onAbrirRegistro()"
+          >¡Regístrate!</a
+        >
+      </div>
+    </form>
+  </ng-container>
+  <ng-container *nzModalFooter>
+    <button nz-button nzType="default" (click)="onCancelar()">Cerrar</button>
+    <button
+      nz-button
+      nzType="primary"
+      (click)="onIniciarSesion()"
+      [disabled]="!form.valid"
+    >
+      Iniciar sesión
+    </button>
+  </ng-container>
+</nz-modal>
