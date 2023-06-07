@@ -1,18 +1,57 @@
-<app-preguntas-editar [id]="idPreguntaSeleccionada"></app-preguntas-editar>
-<table>
-  <tr>
-    <th>Título</th>
-    <th>Categoría</th>
-    <th>Pública</th>
-    <th>Opciones</th>
-  </tr>
-  <tr *ngFor="let pregunta of preguntas">
-    <td>{{ pregunta.titulo }}</td>
-    <td>{{ pregunta.nombreCategoria }}</td>
-    <td>{{ pregunta.esPublica }}</td>
-    <td>
-      <button (click)="alternarVisibilidad(pregunta)">Visibilidad</button>
-      <button (click)="onEditar(pregunta.id)">Editar</button>
-    </td>
-  </tr>
-</table>
+<nz-card>
+  <nz-table
+    #datosTabla
+    [nzScroll]="{ x: '740px' }"
+    [nzData]="preguntas"
+    nzSimple
+  >
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th nzWidth="200px">Categoría</th>
+        <th nzAlign="center" nzWidth="120px">Pública</th>
+        <th nzAlign="center" nzWidth="120px">Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pregunta of datosTabla.data; index as i">
+        <td>{{ pregunta.titulo }}</td>
+        <td>{{ pregunta.nombreCategoria }}</td>
+        <td nzAlign="center">{{ pregunta.esPublica ? "Sí" : "No" }}</td>
+        <td nzAlign="center">
+          <div nz-row [nzGutter]="8" nzJustify="center">
+            <div nz-col>
+              <button
+                nz-button
+                class="ant-btn-icon-only"
+                nzType="primary"
+                (click)="alternarVisibilidad(pregunta)"
+              >
+                <span
+                  nz-icon
+                  [nzType]="pregunta.esPublica ? 'eye-invisible' : 'eye'"
+                  nzTheme="fill"
+                ></span>
+              </button>
+            </div>
+            <div nz-col>
+              <button
+                nz-button
+                class="ant-btn-icon-only"
+                nzType="primary"
+                (click)="onEditar(pregunta.id)"
+              >
+                <span nz-icon nzType="edit" nzTheme="fill"></span>
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<app-preguntas-editar
+  [id]="idPreguntaSeleccionada"
+  [(esVisible)]="mostrarModalEdicion"
+  (refrescar)="onRefrescar()"
+></app-preguntas-editar>

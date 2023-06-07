@@ -10,17 +10,16 @@ import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
   styleUrls: ['./preguntas.component.scss'],
 })
 export class PreguntasComponent implements OnInit {
-  preguntas: PreguntaRevision[];
+  preguntas: PreguntaRevision[] = [];
   idPreguntaSeleccionada: number;
+  mostrarModalEdicion: boolean;
   constructor(
     private preguntaService: PreguntaService,
     private notificacionService: NotificacionService
   ) {}
 
   ngOnInit(): void {
-    this.preguntaService.listar().subscribe((preguntas) => {
-      this.preguntas = preguntas;
-    });
+    this.onRefrescar();
   }
 
   alternarVisibilidad(pregunta: PreguntaRevision): void {
@@ -37,5 +36,12 @@ export class PreguntasComponent implements OnInit {
 
   onEditar(id: number): void {
     this.idPreguntaSeleccionada = id;
+    this.mostrarModalEdicion = true;
+  }
+
+  onRefrescar(): void {
+    this.preguntaService.listar().subscribe((preguntas) => {
+      this.preguntas = preguntas;
+    });
   }
 }

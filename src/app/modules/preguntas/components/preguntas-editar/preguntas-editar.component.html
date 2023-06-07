@@ -1,52 +1,103 @@
-<form [formGroup]="form" (ngSubmit)="onGuardar()">
-  <div class="mb-3 form-floating">
-    <select
-      #selectCategoria
-      class="form-select"
-      (change)="onCambioCategoria(+selectCategoria.value!)"
-      [value]="form.value.idCategoria"
+<nz-modal
+  [(nzVisible)]="esVisible"
+  nzTitle="Registro"
+  (nzOnCancel)="onCancelar()"
+>
+  <ng-container *nzModalContent>
+    <form
+      nz-form
+      nzLayout="vertical"
+      [formGroup]="form"
+      (ngSubmit)="onGuardar()"
     >
-      <option selected disabled>-</option>
-      <option *ngFor="let categoria of categorias" [value]="categoria.id">
-        {{ categoria.nombre }}
-      </option>
-      <option [value]="0">Otra</option>
-    </select>
-    <label for="floatingSelect">Selecciona una categoría</label>
-  </div>
-  <ng-container *ngIf="+selectCategoria.value === 0">
-    <div class="form-floating mb-3">
-      <input
-        type="text"
-        class="form-control"
-        id="categoria"
-        formControlName="nombreCategoria"
-      />
-      <label for="categoria">Categoría</label>
-    </div>
-  </ng-container>
-  <div class="mb-3">
-    <textarea class="form-control" formControlName="titulo"></textarea>
-  </div>
-  <div formArrayName="respuestas">
-    <div
-      *ngFor="let respuesta of getRespuestasFormArray().controls; index as i"
-      class="mb-3"
-      [formGroupName]="i"
-    >
-      <input class="form-control" formControlName="titulo" />
-      <div class="form-switch">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          role="switch"
-          (change)="onCambioEsCorrecta(!respuesta.value.esCorrecta, i)"
-          [checked]="respuesta.value.esCorrecta"
-        />
+      <nz-form-item>
+        <nz-form-label nzFor="select-categoria" nzRequired
+          >Categoría</nz-form-label
+        >
+        <nz-form-control>
+          <nz-select
+            nzId="select-categoria"
+            formControlName="idCategoria"
+            nzPlaceHolder="Selecciona una categoría"
+            (ngModelChange)="onCambioCategoria()"
+          >
+            <nz-option
+              *ngFor="let categoria of categorias"
+              [nzValue]="categoria.id"
+              [nzLabel]="categoria.nombre"
+            ></nz-option>
+            <nz-option [nzValue]="0" nzLabel="Otra"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <ng-container *ngIf="form.value.idCategoria === 0">
+        <nz-form-item>
+          <nz-form-label nzFor="nueva-categoria" nzRequired
+            >Categoría nueva</nz-form-label
+          >
+          <nz-form-control>
+            <input
+              id="nueva-categoria"
+              nz-input
+              formControlName="nombreCategoria"
+              placeholder="Categoría"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </ng-container>
+      <nz-form-item>
+        <nz-form-label nzFor="titulo" nzRequired>Título</nz-form-label>
+        <nz-form-control>
+          <textarea
+            id="titulo"
+            nz-input
+            [rows]="4"
+            formControlName="titulo"
+            placeholder="Título de la pregunta"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+      <div formArrayName="respuestas">
+        <nz-form-item
+          *ngFor="
+            let respuesta of form.controls.respuestas.controls;
+            index as i
+          "
+          [formGroupName]="i"
+        >
+          <nz-form-label [nzFor]="'respuesta' + i" nzRequired>
+            <span>Respuesta {{ i + 1 }}</span>
+            <nz-switch
+              class="ms-16"
+              [ngModelOptions]="{ standalone: true }"
+              [ngModel]="respuesta.value.esCorrecta"
+              [nzCheckedChildren]="correctaTpl"
+              [nzUnCheckedChildren]="incorrectaTpl"
+              (ngModelChange)="
+                onCambioEsCorrecta(!respuesta.value.esCorrecta, i)
+              "
+            ></nz-switch>
+          </nz-form-label>
+          <nz-form-control>
+            <input [id]="'respuesta' + i" nz-input formControlName="titulo" />
+          </nz-form-control>
+        </nz-form-item>
       </div>
-    </div>
-  </div>
-  <button class="btn btn-primary" [disabled]="!form.valid">
-    Guardar cambios
-  </button>
-</form>
+    </form>
+  </ng-container>
+  <ng-container *nzModalFooter>
+    <button nz-button nzType="default" (click)="onCancelar()">Cerrar</button>
+    <button
+      nz-button
+      nzType="primary"
+      (click)="onGuardar()"
+      [disabled]="!form.valid"
+    >
+      <span nz-icon nzType="highlight"></span>
+      Guardar cambios
+    </button>
+  </ng-container>
+</nz-modal>
+
+<ng-template #correctaTpl><span nz-icon nzType="check"></span></ng-template>
+<ng-template #incorrectaTpl><span nz-icon nzType="close"></span></ng-template>

@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from './services/auth/auth.service';
 import { Usuario } from './models/usuario/usuario';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,14 +8,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  @HostListener('window:beforeunload') onCerrarApp() {
+    this.guardarFechaSesion();
+  }
   usuario?: Usuario;
-  constructor(private authService: AuthService, private router: Router) {}
+
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.authService.usuario$.subscribe((usuario) => (this.usuario = usuario));
   }
 
-  onJugar(): void {
-    this.router.navigateByUrl('/jugar');
+  guardarFechaSesion(): void {
+    localStorage.setItem('fecha-sesion-usuario', new Date().toString());
   }
 }

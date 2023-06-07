@@ -6,6 +6,7 @@
       >
       <nz-form-control>
         <nz-select
+          nzId="select-categoria"
           formControlName="idCategoria"
           nzPlaceHolder="Selecciona una categoría"
           (ngModelChange)="onCambioCategoria()"
@@ -21,18 +22,24 @@
     </nz-form-item>
     <ng-container *ngIf="form.value.idCategoria === 0">
       <nz-form-item>
-        <nz-form-label nzFor="select-categoria" nzRequired
+        <nz-form-label nzFor="nueva-categoria" nzRequired
           >Categoría nueva</nz-form-label
         >
         <nz-form-control>
-          <input nz-input formControlName="categoria" placeholder="Categoría" />
+          <input
+            nz-input
+            id="nueva-categoria"
+            formControlName="categoria"
+            placeholder="Categoría"
+          />
         </nz-form-control>
       </nz-form-item>
     </ng-container>
     <nz-form-item>
-      <nz-form-label nzFor="select-categoria" nzRequired>Título</nz-form-label>
+      <nz-form-label nzFor="titulo" nzRequired>Título</nz-form-label>
       <nz-form-control>
         <textarea
+          id="titulo"
           nz-input
           [rows]="4"
           formControlName="titulo"
@@ -45,7 +52,7 @@
         *ngFor="let respuesta of form.controls.respuestas.controls; index as i"
         [formGroupName]="i"
       >
-        <nz-form-label nzFor="select-categoria" nzRequired>
+        <nz-form-label [nzFor]="'respuesta' + i" nzRequired>
           <span>Respuesta {{ i + 1 }}</span>
           <nz-switch
             class="ms-16"
@@ -57,7 +64,7 @@
           ></nz-switch>
         </nz-form-label>
         <nz-form-control>
-          <input nz-input formControlName="titulo" />
+          <input nz-input [id]="'respuesta' + i" formControlName="titulo" />
         </nz-form-control>
       </nz-form-item>
     </div>

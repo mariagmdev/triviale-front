@@ -25,9 +25,19 @@ export class AuthService {
     });
 
     const usuarioStr = localStorage.getItem('usuario-triviale');
-    if (usuarioStr) {
-      const usuario = JSON.parse(usuarioStr);
-      this.usuario$.next(usuario);
+    const fechaStr = localStorage.getItem('fecha-sesion-usuario');
+    if (usuarioStr && fechaStr) {
+      const fecha = new Date(fechaStr);
+      const fechaAhora = new Date();
+      if (fechaAhora.getTime() < fecha.getTime() + 30 * 60 * 1000) {
+        // Comprobamos que la sesión lleve menos de 30 minutos
+        const usuario = JSON.parse(usuarioStr);
+        this.usuario$.next(usuario);
+      } else {
+        this.limpiarDatosSesion();
+      }
+    } else {
+      this.limpiarDatosSesion();
     }
   }
 
@@ -45,6 +55,7 @@ export class AuthService {
 
   cerrarSesion(): void {
     this.usuario$.next(undefined);
+    this.limpiarDatosSesion();
     this.router.navigateByUrl('/');
   }
 
@@ -53,5 +64,10 @@ export class AuthService {
       verificar: true,
       token: token,
     });
+  }
+
+  private limpiarDatosSesion(): void {
+    localStorage.removeItem('usuario-triviale');
+    localStorage.removeItem('fecha-sesion-usuario');
   }
 }
