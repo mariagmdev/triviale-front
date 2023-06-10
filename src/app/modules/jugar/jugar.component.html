@@ -38,38 +38,50 @@
   <nz-card>
     <div nz-row>
       <div nz-col [nzSpan]="6">
-        <div nz-row [nzGutter]="8">
-          <div nz-col>
-            <span
-              class="vida"
-              nz-icon
-              nzType="heart"
-              [nzTheme]="vidasRestantes >= 1 ? 'fill' : 'outline'"
-            ></span>
-          </div>
-          <div nz-col>
-            <span
-              class="vida"
-              nz-icon
-              nzType="heart"
-              [nzTheme]="vidasRestantes >= 2 ? 'fill' : 'outline'"
-            ></span>
-          </div>
-          <div nz-col>
-            <span
-              class="vida"
-              nz-icon
-              nzType="heart"
-              [nzTheme]="vidasRestantes >= 3 ? 'fill' : 'outline'"
-            ></span>
-          </div>
+        {{ preguntas[indexPreguntaActual].nombreCategoria }}
+        <div class="w-100" style="aspect-ratio: 1">
+          <img
+            class="w-100"
+            [src]="preguntas[indexPreguntaActual].imgCategoria"
+            alt="Imagen categoría"
+          />
         </div>
       </div>
       <div nz-col class="text-center" [nzSpan]="12">
         <h4>Pregunta {{ indexPreguntaActual + 1 }}/{{ preguntas.length }}</h4>
         <div>{{ milisegundos | date : "mm:ss" : "UTC" }}</div>
       </div>
-      <div nz-col class="text-end" [nzSpan]="6">Puntuación: {{ puntos }}</div>
+      <div nz-col class="text-end" [nzSpan]="6">
+        Puntuación: {{ puntos }}
+        <div class="text-end">
+          <div nz-row [nzGutter]="8">
+            <div nz-col>
+              <span
+                class="vida"
+                nz-icon
+                nzType="heart"
+                [nzTheme]="vidasRestantes >= 1 ? 'fill' : 'outline'"
+              ></span>
+            </div>
+            <div nz-col>
+              <span
+                class="vida"
+                nz-icon
+                nzType="heart"
+                [nzTheme]="vidasRestantes >= 2 ? 'fill' : 'outline'"
+              ></span>
+            </div>
+            <div nz-col>
+              <span
+                class="vida"
+                nz-icon
+                nzType="heart"
+                [nzTheme]="vidasRestantes >= 3 ? 'fill' : 'outline'"
+              ></span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </nz-card>
   <nz-card>

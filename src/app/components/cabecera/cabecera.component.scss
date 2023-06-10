@@ -1,11 +1,17 @@
 .logo {
   height: 50px;
+}
 
+.logo-reducido {
+  height: 45px;
+}
+
+.logo,
+.logo-reducido {
   img {
     vertical-align: inherit;
   }
 }
-
 nz-header {
   position: fixed;
   width: 100%;
@@ -14,8 +20,6 @@ nz-header {
   justify-content: space-between;
   align-items: center;
   z-index: 1000;
-}
-
-[nz-menu] {
-  line-height: 64px;
+  padding: 8px 32px;
+  line-height: auto;
 }

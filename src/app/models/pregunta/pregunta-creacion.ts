@@ -5,4 +5,5 @@ export interface PreguntaCreacion {
   respuestas: RespuestaCreacion[];
   idCategoria: number;
   categoria?: string;
+  imgCategoria?: string;
 }

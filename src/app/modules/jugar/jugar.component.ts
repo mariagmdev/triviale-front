@@ -28,7 +28,6 @@ export class JugarComponent implements OnInit {
 
   constructor(
     private partidaService: PartidaService,
-    private preguntaService: PreguntaService,
     private categoriaService: CategoriaService
   ) {}
 

@@ -1,28 +1,30 @@
 <div>
   <h2 class="text-center">Ranking 🏅</h2>
-  <div class="text-center-flex pt-16">
-    <app-ranking></app-ranking>
+  <div nz-row nzJustify="center" class="pt-16">
+    <div nz-col>
+      <app-ranking></app-ranking>
+    </div>
   </div>
 </div>
 
 <div class="mt-48">
   <ng-container *ngIf="usuario">
     <h2 class="text-center">¿Qué quieres hacer? 🤔</h2>
-    <div nz-row class="pt-16" [nzGutter]="24" nzJustify="center">
-      <div nz-col>
-        <a nz-button nzType="primary" routerLink="/jugar">
+    <div nz-row class="pt-16" [nzGutter]="[24, 16]" nzJustify="center">
+      <div nz-col [nzXs]="24" [nzMd]="7" [nzXl]="5">
+        <a nz-button nzBlock nzType="primary" routerLink="/jugar">
           <span nz-icon nzType="question"></span>
           Jugar
         </a>
       </div>
-      <div nz-col>
-        <a nz-button nzType="primary" routerLink="/preguntas/crear">
+      <div nz-col [nzXs]="24" [nzMd]="7" [nzXl]="5">
+        <a nz-button nzBlock nzType="primary" routerLink="/preguntas/crear">
           <span nz-icon nzType="highlight"></span>
           Crear pregunta
         </a>
       </div>
-      <div *ngIf="esAdmin" nz-col>
-        <a nz-button nzType="primary" routerLink="/preguntas">
+      <div *ngIf="esAdmin" nz-col [nzXs]="24" [nzMd]="7" [nzXl]="5">
+        <a nz-button nzBlock nzType="primary" routerLink="/preguntas">
           <span nz-icon nzType="file-search"></span>
           Revisar pregunta
         </a>

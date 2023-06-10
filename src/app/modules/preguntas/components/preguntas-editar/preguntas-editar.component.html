@@ -31,19 +31,55 @@
         </nz-form-control>
       </nz-form-item>
       <ng-container *ngIf="form.value.idCategoria === 0">
-        <nz-form-item>
-          <nz-form-label nzFor="nueva-categoria" nzRequired
-            >Categoría nueva</nz-form-label
-          >
-          <nz-form-control>
-            <input
-              id="nueva-categoria"
-              nz-input
-              formControlName="nombreCategoria"
-              placeholder="Categoría"
-            />
-          </nz-form-control>
-        </nz-form-item>
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzXs]="24" [nzSm]="8">
+            <nz-form-item>
+              <nz-form-label>Imagen categoría</nz-form-label>
+              <nz-upload
+                style="aspect-ratio: 1"
+                class="w-100"
+                [nzAction]="rutaImg"
+                nzName="imgCategoria"
+                nzListType="picture-card"
+                [nzShowUploadList]="false"
+                [nzSize]="2048"
+                [nzLimit]="1"
+                nzFileType="image/png,image/jpeg"
+                [nzBeforeUpload]="verificarImagen"
+                (nzChange)="onCambioSubida($event)"
+              >
+                <ng-container *ngIf="!imgCategoria">
+                  <span
+                    class="upload-icon"
+                    nz-icon
+                    [nzType]="cargandoImg ? 'loading' : 'plus'"
+                  ></span>
+                  <div class="ant-upload-text">Subir</div>
+                </ng-container>
+                <img
+                  *ngIf="imgCategoria"
+                  [src]="imgCategoria"
+                  style="width: 100%"
+                />
+              </nz-upload>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzXs]="24" [nzSm]="16">
+            <nz-form-item>
+              <nz-form-label nzFor="nueva-categoria" nzRequired
+                >Categoría nueva</nz-form-label
+              >
+              <nz-form-control>
+                <input
+                  nz-input
+                  id="nueva-categoria"
+                  formControlName="nombreCategoria"
+                  placeholder="Categoría"
+                />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
       </ng-container>
       <nz-form-item>
         <nz-form-label nzFor="titulo" nzRequired>Título</nz-form-label>

@@ -33,6 +33,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { RankingComponent } from 'src/app/components/ranking/ranking.component';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 const triviale = [RankingComponent];
 const angular = [
@@ -42,6 +43,7 @@ const angular = [
   RecaptchaFormsModule,
 ];
 const ngZorro = [
+  NzUploadModule,
   NzLayoutModule,
   NzMenuModule,
   NzCheckboxModule,

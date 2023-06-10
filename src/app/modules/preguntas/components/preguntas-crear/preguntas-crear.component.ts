@@ -9,12 +9,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NzUploadFile } from 'ng-zorro-antd/upload';
+import { Observable, Observer } from 'rxjs';
 import { TipoNotificacion } from 'src/app/enums/tipo-notificacion/tipo-notificacion';
 import { Categoria } from 'src/app/models/categoria/categoria';
 import { PreguntaCreacion } from 'src/app/models/pregunta/pregunta-creacion';
 import { PreguntaCreacionFG } from 'src/app/models/pregunta/pregunta-creacion-fg';
 import { RespuestaCreacion } from 'src/app/models/respuesta/respuesta-creacion';
 import { RespuestaCreacionFG } from 'src/app/models/respuesta/respuesta-creacion-fg';
+import { ArchivoService } from 'src/app/services/archivo/archivo.service';
 import { CategoriaService } from 'src/app/services/categoria/categoria.service';
 import { NotificacionService } from 'src/app/services/notificacion/notificacion.service';
 import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
@@ -27,12 +30,16 @@ import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
 export class PreguntasCrearComponent implements OnInit {
   form: FormGroup<PreguntaCreacionFG>;
   categorias: Categoria[];
+  readonly rutaImg = this.archivoService.ruta;
+  cargandoImg: boolean;
+  imgCategoria: string;
 
   constructor(
     private categoriaService: CategoriaService,
     private preguntaService: PreguntaService,
     private notificacionService: NotificacionService,
-    private router: Router
+    private router: Router,
+    private archivoService: ArchivoService
   ) {}
 
   ngOnInit(): void {
@@ -61,6 +68,7 @@ export class PreguntasCrearComponent implements OnInit {
   }
 
   onCrear(): void {
+    //Quitar espacios.
     const valorForm = this.form.value;
     this.form.patchValue({
       ...valorForm,
@@ -74,14 +82,17 @@ export class PreguntasCrearComponent implements OnInit {
       });
     });
     this.form.updateValueAndValidity();
+    //Salir si el formulario no es válido.
     if (!this.form.valid) {
       return;
     }
+    //Generamos la pregunta a mandar para back.
     const valorFormValido = this.form.value;
     const pregunta: PreguntaCreacion = {
       titulo: valorFormValido.titulo!,
       idCategoria: valorFormValido.idCategoria!,
       categoria: valorFormValido.categoria!,
+      imgCategoria: this.imgCategoria,
       respuestas: valorFormValido.respuestas!.map(
         (respuesta): RespuestaCreacion => ({
           titulo: respuesta.titulo!,
@@ -121,6 +132,57 @@ export class PreguntasCrearComponent implements OnInit {
     this.form.updateValueAndValidity();
   }
 
+  verificarImagen = (
+    file: NzUploadFile,
+    _fileList: NzUploadFile[]
+  ): Observable<boolean> =>
+    new Observable((observer: Observer<boolean>) => {
+      const isJpgOrPng =
+        file.type === 'image/jpeg' || file.type === 'image/png';
+      if (!isJpgOrPng) {
+        this.notificacionService.mostrar({
+          mensaje: 'La imagen no es un .JPG ni .PNG.',
+          tipo: TipoNotificacion.Error,
+        });
+        observer.complete();
+        return;
+      }
+      const isLt2M = file.size! / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        this.notificacionService.mostrar({
+          mensaje: 'La imagen pesa más de 2MB.',
+          tipo: TipoNotificacion.Error,
+        });
+        observer.complete();
+        return;
+      }
+      observer.next(isJpgOrPng && isLt2M);
+      observer.complete();
+    });
+
+  onCambioSubida(info: { file: NzUploadFile }): void {
+    switch (info.file.status) {
+      case 'uploading':
+        this.cargandoImg = true;
+        break;
+      case 'done':
+        this.archivoService.convertirABase64(
+          info.file!.originFileObj!,
+          (img: string) => {
+            this.cargandoImg = false;
+            this.imgCategoria = img;
+          }
+        );
+        break;
+      case 'error':
+        this.notificacionService.mostrar({
+          mensaje: 'Error al subir la imagen.',
+          tipo: TipoNotificacion.Error,
+        });
+        this.cargandoImg = false;
+        break;
+    }
+  }
   private unaRespuestaSeleccionadaValidator(): ValidatorFn {
     return (form: AbstractControl): ValidationErrors | null => {
       const valorForm = (form as FormGroup<PreguntaCreacionFG>).value;
