@@ -1,21 +1,45 @@
 <nz-card>
+  <div class="mb-24">
+    <nz-input-group [nzSuffix]="suffixIconSearch">
+      <input
+        type="text"
+        nz-input
+        placeholder="Buscar preguntas..."
+        [(ngModel)]="filtro"
+        (ngModelChange)="onCambioFiltro()"
+      />
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+  </div>
+
   <nz-table
     #datosTabla
     [nzScroll]="{ x: '740px' }"
-    [nzData]="preguntas"
+    [nzData]="preguntasFiltradas"
     nzSimple
   >
     <thead>
       <tr>
         <th>Título</th>
         <th nzWidth="200px">Categoría</th>
-        <th nzAlign="center" nzWidth="120px">Pública</th>
+        <th nzAlign="center" nzWidth="120px" [nzSortFn]="fnOrdenacionPublica">
+          Pública
+        </th>
         <th nzAlign="center" nzWidth="120px">Opciones</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let pregunta of datosTabla.data; index as i">
-        <td>{{ pregunta.titulo }}</td>
+        <td
+          nzEllipsis
+          nz-tooltip
+          [nzTooltipTitle]="pregunta.titulo"
+          [nzTooltipMouseEnterDelay]="0.5"
+        >
+          {{ pregunta.titulo }}
+        </td>
         <td>{{ pregunta.nombreCategoria }}</td>
         <td nzAlign="center">{{ pregunta.esPublica ? "Sí" : "No" }}</td>
         <td nzAlign="center">

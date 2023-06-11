@@ -10,9 +10,14 @@ import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
   styleUrls: ['./preguntas.component.scss'],
 })
 export class PreguntasComponent implements OnInit {
-  preguntas: PreguntaRevision[] = [];
+  preguntasFiltradas: PreguntaRevision[] = [];
+  filtro: string;
+
   idPreguntaSeleccionada: number;
   mostrarModalEdicion: boolean;
+
+  private preguntas: PreguntaRevision[] = [];
+
   constructor(
     private preguntaService: PreguntaService,
     private notificacionService: NotificacionService
@@ -20,6 +25,21 @@ export class PreguntasComponent implements OnInit {
 
   ngOnInit(): void {
     this.onRefrescar();
+  }
+
+  onCambioFiltro(): void {
+    const filtro = this.filtro.trim();
+
+    if (!filtro) {
+      this.preguntasFiltradas = this.preguntas;
+    } else {
+      const filtroMinus = filtro.toLowerCase();
+      this.preguntasFiltradas = this.preguntas.filter(
+        (pregunta) =>
+          pregunta.titulo.toLowerCase().includes(filtroMinus) ||
+          pregunta.nombreCategoria.toLowerCase().includes(filtroMinus)
+      );
+    }
   }
 
   alternarVisibilidad(pregunta: PreguntaRevision): void {
@@ -42,6 +62,10 @@ export class PreguntasComponent implements OnInit {
   onRefrescar(): void {
     this.preguntaService.listar().subscribe((preguntas) => {
       this.preguntas = preguntas;
+      this.preguntasFiltradas = preguntas;
     });
   }
+
+  fnOrdenacionPublica = (a: PreguntaRevision, b: PreguntaRevision) =>
+    a.esPublica ? (b.esPublica ? 0 : -1) : 1;
 }
