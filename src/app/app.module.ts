@@ -16,7 +16,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CabeceraComponent } from './components/cabecera/cabecera.component';
 import { InicioSesionComponent } from './components/inicio-sesion/inicio-sesion.component';
 import { InicioComponent } from './components/inicio/inicio.component';
-import { NotificacionComponent } from './components/notificacion/notificacion.component';
 import { RegistroComponent } from './components/registro/registro.component';
 
 registerLocaleData(es);
@@ -28,7 +27,6 @@ registerLocaleData(es);
     CabeceraComponent,
     InicioSesionComponent,
     RegistroComponent,
-    NotificacionComponent,
   ],
   imports: [
     BrowserModule,

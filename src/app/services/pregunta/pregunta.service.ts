@@ -5,11 +5,24 @@ import { environment } from 'src/environments/environment';
 import { PreguntaCreacion } from 'src/app/models/pregunta/pregunta-creacion';
 import { PreguntaRevision } from 'src/app/models/pregunta/pregunta-revision';
 import { PreguntaEdicion } from 'src/app/models/pregunta/pregunta-edicion';
+import { Pregunta } from 'src/app/models/pregunta/pregunta';
 
+/**
+ * Servicio que gestiona todo lo relacionado con la entidad de Pregunta.
+ *
+ * @export
+ * @class PreguntaService
+ */
 @Injectable({ providedIn: 'root' })
 export class PreguntaService {
   private readonly api = environment.api;
   constructor(private http: HttpClient) {}
+
+  obtenerPreguntasPartida(idCategorias: number[]): Observable<Pregunta[]> {
+    return this.http.post<Pregunta[]>(`${this.api}/preguntas.php`, {
+      idCategorias: idCategorias,
+    });
+  }
 
   validar(idPregunta: number, idRespuesta: number): Observable<boolean> {
     return this.http.post<boolean>(`${this.api}/preguntas.php`, {

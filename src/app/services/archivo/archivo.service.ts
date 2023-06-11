@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
+/**
+ * Servicio de gestión de archivos.
+ *
+ * @export
+ * @class ArchivoService
+ */
 @Injectable({ providedIn: 'root' })
 export class ArchivoService {
   readonly ruta = `${environment.api}/subir.php`;

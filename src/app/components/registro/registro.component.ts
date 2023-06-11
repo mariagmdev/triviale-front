@@ -12,6 +12,13 @@ import { TipoNotificacion } from 'src/app/enums/tipo-notificacion/tipo-notificac
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { NotificacionService } from 'src/app/services/notificacion/notificacion.service';
 
+/**
+ * Componente de registro de nuevo usuario.
+ *
+ * @export
+ * @class RegistroComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
@@ -31,6 +38,7 @@ export class RegistroComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Creamos el formulario.
     this.form = new FormGroup(
       {
         nombre: new FormControl('', [
@@ -51,6 +59,7 @@ export class RegistroComponent implements OnInit {
   }
 
   onRegistrarse() {
+    // Obtenemos el token para el captcha, verificamos y si va bien, se sigue con el registro.
     this.recaptchaV3Service.execute('importantAction').subscribe((token) => {
       this.authService.verificarRecaptcha(token).subscribe((esValido) => {
         if (esValido) {
@@ -77,6 +86,13 @@ export class RegistroComponent implements OnInit {
     this.abrirInicioSesion.emit();
   }
 
+  /**
+   * Función para comprobar si ambas claves del formulario coinciden.
+   *
+   * @private
+   * @return {ValidatorFn}
+   * @memberof RegistroComponent
+   */
   private claveConcuerdanValidator(): ValidatorFn {
     return (form: AbstractControl): ValidationErrors | null => {
       const valorForm = form.value;

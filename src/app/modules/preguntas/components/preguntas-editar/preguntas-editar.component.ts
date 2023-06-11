@@ -29,6 +29,15 @@ import { CategoriaService } from 'src/app/services/categoria/categoria.service';
 import { NotificacionService } from 'src/app/services/notificacion/notificacion.service';
 import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
 
+/**
+ * Componente de editor de preguntas.
+ * Se muestra en modal y recibe el id de la pregunta a editar.
+ *
+ * @export
+ * @class PreguntasEditarComponent
+ * @implements {OnInit}
+ * @implements {OnChanges}
+ */
 @Component({
   selector: 'app-preguntas-editar',
   templateUrl: './preguntas-editar.component.html',
@@ -54,13 +63,24 @@ export class PreguntasEditarComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
+    // Crear formulario.
     this.inicializarForm();
+
+    // Listar categorías disponibles.
     this.categoriaService.listar().subscribe((categorias) => {
       this.categorias = categorias;
     });
   }
 
+  /**
+   * Método del ciclo de vida de angular que se ejecuta siempre que haya
+   * cambios en las propiedades del componente.
+   *
+   * @param {SimpleChanges} changes
+   * @memberof PreguntasEditarComponent
+   */
   ngOnChanges(changes: SimpleChanges): void {
+    // Escuchamos los cambios y inicializamos form y datos cuando obtengamos un id.
     if (changes['id'] && this.id) {
       this.pregunta = undefined;
       this.inicializarForm();
@@ -81,6 +101,7 @@ export class PreguntasEditarComponent implements OnInit, OnChanges {
   }
 
   onGuardar(): void {
+    // Limpiar espacios.
     const valorForm = this.form.value;
     this.form.patchValue({
       ...valorForm,
@@ -94,9 +115,13 @@ export class PreguntasEditarComponent implements OnInit, OnChanges {
       });
     });
     this.form.updateValueAndValidity();
+
+    // Salir si el formulario no es válido.
     if (!this.form.valid) {
       return;
     }
+
+    // Generamos la pregunta a mandar para back.
     const valorFormValido = this.form.value;
     const pregunta = {
       ...this.pregunta,
@@ -122,6 +147,14 @@ export class PreguntasEditarComponent implements OnInit, OnChanges {
     });
   }
 
+  /**
+   * Establece todas las respuestas como incorrectas, y establece la respuesta dada
+   * por su posición como correcta.
+   *
+   * @param {boolean} esCorrecta
+   * @param {number} i index de la respuesta
+   * @memberof PreguntasCrearComponent
+   */
   onCambioEsCorrecta(esCorrecta: boolean, i: number): void {
     const respuestasFormControl = this.form.controls.respuestas;
     respuestasFormControl.controls.forEach((respuesta) => {
@@ -134,6 +167,12 @@ export class PreguntasEditarComponent implements OnInit, OnChanges {
     this.form.updateValueAndValidity();
   }
 
+  /**
+   * Añadir el validador de requerido al nombre de categoría cuando se ha decidido crear una nueva,
+   * elimnar en caso contrario.
+   *
+   * @memberof PreguntasCrearComponent
+   */
   onCambioCategoria(): void {
     const catControl = this.form.controls.nombreCategoria;
     const idCategoria = this.form.value.idCategoria;
@@ -152,6 +191,17 @@ export class PreguntasEditarComponent implements OnInit, OnChanges {
     this.esVisibleChange.emit(this.esVisible);
   }
 
+  /**
+   * Función que verifica ciertos parámetros de la imagen subida:
+   * * Tipo jpg o png.
+   * * Tamaño máximo de 2MB.
+   *
+   * En caso de no cumplir uno de estos requisitos, se mostrará un error y se cancelará la subida.
+   *
+   * @param {NzUploadFile} file
+   * @param {NzUploadFile[]} _fileList
+   * @memberof PreguntasCrearComponent
+   */
   verificarImagen = (
     file: NzUploadFile,
     _fileList: NzUploadFile[]
@@ -180,6 +230,12 @@ export class PreguntasEditarComponent implements OnInit, OnChanges {
       observer.complete();
     });
 
+  /**
+   * Establece cambios según el estado actual de la subida de la imagen.
+   *
+   * @param {{ file: NzUploadFile }} info
+   * @memberof PreguntasCrearComponent
+   */
   onCambioSubida(info: { file: NzUploadFile }): void {
     switch (info.file.status) {
       case 'uploading':
@@ -226,6 +282,13 @@ export class PreguntasEditarComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Función para comprobar si al menos hay una respuesta marcada como correcta.
+   *
+   * @private
+   * @return {ValidatorFn}
+   * @memberof PreguntasCrearComponent
+   */
   private unaRespuestaSeleccionadaValidator(): ValidatorFn {
     return (form: AbstractControl): ValidationErrors | null => {
       const valorForm = (form as FormGroup<PreguntaEdicionFG>).value;

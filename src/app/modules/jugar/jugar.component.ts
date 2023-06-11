@@ -3,9 +3,16 @@ import { Categoria } from 'src/app/models/categoria/categoria';
 import { Pregunta } from 'src/app/models/pregunta/pregunta';
 import { PreguntaRespondida } from 'src/app/models/pregunta/pregunta-respondida';
 import { CategoriaService } from 'src/app/services/categoria/categoria.service';
-import { PartidaService } from 'src/app/services/partida/partida.service';
+import { PuntuacionService } from 'src/app/services/puntuacion/puntuacion.service';
 import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
 
+/**
+ * Componente de jugar una partida.
+ *
+ * @export
+ * @class JugarComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-jugar',
   templateUrl: './jugar.component.html',
@@ -27,17 +34,27 @@ export class JugarComponent implements OnInit {
   private preguntasRespondidas: PreguntaRespondida[] = [];
 
   constructor(
-    private partidaService: PartidaService,
+    private puntuacionService: PuntuacionService,
+    private preguntaService: PreguntaService,
     private categoriaService: CategoriaService
   ) {}
 
   ngOnInit(): void {
+    // Listar categorías disponibles.
     this.categoriaService.listarCategoriasPartida().subscribe((categorias) => {
       this.categorias = categorias;
     });
   }
 
+  /**
+   * Verifica cada pregunta para sumar o no puntuación y si es la última procede a enviarlas todas al servidor
+   * para comprobar sus respuestas correctas y generar una puntuación
+   *
+   * @param {PreguntaRespondida} preguntaRespondida
+   * @memberof JugarComponent
+   */
   onResponder(preguntaRespondida: PreguntaRespondida): void {
+    // Almacenar la pregunta respondida y su respuesta.
     this.preguntasRespondidas.push(preguntaRespondida);
     if (this.indexPreguntaActual! < this.preguntas!.length - 1) {
       this.indexPreguntaActual!++;
@@ -51,7 +68,7 @@ export class JugarComponent implements OnInit {
       }
     } else {
       this.terminarPartida();
-      this.partidaService
+      this.puntuacionService
         .crearPuntuacion(this.preguntasRespondidas, this.milisegundos / 1000)
         .subscribe((puntos) => {
           this.puntos = puntos;
@@ -59,6 +76,11 @@ export class JugarComponent implements OnInit {
     }
   }
 
+  /**
+   * Actualizar el total de preguntas a utilizar para el test cuando cambien las categorías seleccionadas.
+   *
+   * @memberof JugarComponent
+   */
   onCambioCategorias(): void {
     this.totalPreguntasPorCategorias = 0;
     this.categoriasSeleccionadas.forEach((categoria) => {
@@ -66,11 +88,16 @@ export class JugarComponent implements OnInit {
     });
   }
 
+  /**
+   * Obtiene las preguntas según las categorías seleccionadas y comienza la partida.
+   *
+   * @memberof JugarComponent
+   */
   onComenzarPartida(): void {
     const idCategorias = this.categoriasSeleccionadas.map(
       (categoria) => categoria.id
     );
-    this.partidaService
+    this.preguntaService
       .obtenerPreguntasPartida(idCategorias)
       .subscribe((preguntas) => {
         this.preguntas = preguntas;
@@ -79,6 +106,11 @@ export class JugarComponent implements OnInit {
       });
   }
 
+  /**
+   * Restablece el estado de la partida al inicio, restaurando las propiedades de la misma.
+   *
+   * @memberof JugarComponent
+   */
   onReiniciarPartida(): void {
     this.preguntas = undefined;
     this.indexPreguntaActual = undefined;
@@ -86,6 +118,7 @@ export class JugarComponent implements OnInit {
     this.vidasRestantes = 3;
     this.categoriasSeleccionadas = [];
     this.onCambioCategorias();
+    this.preguntasRespondidas = [];
     this.estaPartidaTerminada = false;
   }
 

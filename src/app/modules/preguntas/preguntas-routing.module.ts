@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PreguntasComponent } from './preguntas.component';
 import { PreguntasCrearComponent } from './components/preguntas-crear/preguntas-crear.component';
 
+// Rutas del módulo de preguntas.
 const routes: Routes = [
   {
     path: '',

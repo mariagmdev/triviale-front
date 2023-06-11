@@ -7,15 +7,22 @@ import { UsuarioInicioSesion } from 'src/app/models/usuario/usuario-login';
 import { UsuarioRegistro } from 'src/app/models/usuario/usuario-registro';
 import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root',
-})
+/**
+ * Servicio de autenticación. Se encarga del registro, inicio y cierre de sesión.
+ * También contiene recursos para la comprobación del catpcha.
+ *
+ * @export
+ * @class AuthService
+ */
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   readonly usuario$ = new BehaviorSubject<Usuario | undefined>(undefined);
 
   private readonly api = environment.api;
 
   constructor(private http: HttpClient, private router: Router) {
+    // Escuchamos todos los cambios que haya en usuario, y establecemos o eliminamos
+    // esos datos en el localStorage.
     this.usuario$.pipe(skip(1)).subscribe((usuario) => {
       if (usuario) {
         localStorage.setItem('usuario-triviale', JSON.stringify(usuario));
@@ -24,13 +31,15 @@ export class AuthService {
       }
     });
 
+    // Obtenemos los datos del localStorage.
     const usuarioStr = localStorage.getItem('usuario-triviale');
     const fechaStr = localStorage.getItem('fecha-sesion-usuario');
     if (usuarioStr && fechaStr) {
       const fecha = new Date(fechaStr);
       const fechaAhora = new Date();
+      // Comprobamos que la sesión lleve menos de 30 minutos.
+      // Si lleva más se entiende que ha expirado y limpiamos los datos.
       if (fechaAhora.getTime() < fecha.getTime() + 30 * 60 * 1000) {
-        // Comprobamos que la sesión lleve menos de 30 minutos
         const usuario = JSON.parse(usuarioStr);
         this.usuario$.next(usuario);
       } else {

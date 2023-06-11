@@ -8,9 +8,14 @@ import { Usuario } from './models/usuario/usuario';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  /**
+   * Escuchar el evento del cierre de la ventana para guardar la última actividad
+   * del usuario en la aplicación web.
+   */
   @HostListener('window:beforeunload') onCerrarApp() {
     this.guardarFechaSesion();
   }
+
   usuario?: Usuario;
 
   constructor(private authService: AuthService) {}

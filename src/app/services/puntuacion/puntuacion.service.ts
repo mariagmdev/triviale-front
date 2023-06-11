@@ -1,24 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Pregunta } from 'src/app/models/pregunta/pregunta';
 import { PreguntaRespondida } from 'src/app/models/pregunta/pregunta-respondida';
 import { UsuarioPuntuacion } from 'src/app/models/usuario/usuario-puntuacion';
 import { environment } from 'src/environments/environment';
 
+/**
+ * Servicio que gestiona todo lo relacionado con la entidad de Puntuación.
+ *
+ * @export
+ * @class PuntuacionService
+ */
 @Injectable({
   providedIn: 'root',
 })
-export class PartidaService {
+export class PuntuacionService {
   private readonly api = environment.api;
 
   constructor(private http: HttpClient) {}
-
-  obtenerPreguntasPartida(idCategorias: number[]): Observable<Pregunta[]> {
-    return this.http.post<Pregunta[]>(`${this.api}/jugar.php`, {
-      idCategorias: idCategorias,
-    });
-  }
 
   crearPuntuacion(
     preguntas: PreguntaRespondida[],

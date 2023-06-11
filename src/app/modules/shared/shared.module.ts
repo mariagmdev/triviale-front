@@ -76,6 +76,13 @@ const ngZorro = [
   NzTabsModule,
   NzSwitchModule,
 ];
+
+/**
+ * Módulo utilizado para importar y exportar todos los recursos y dependencias usadas en la aplicación.
+ *
+ * @export
+ * @class SharedModule
+ */
 @NgModule({
   imports: [...angular, ...ngZorro],
   declarations: [...triviale],

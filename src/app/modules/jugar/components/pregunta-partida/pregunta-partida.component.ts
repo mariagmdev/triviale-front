@@ -3,6 +3,12 @@ import { Pregunta } from 'src/app/models/pregunta/pregunta';
 import { PreguntaRespondida } from 'src/app/models/pregunta/pregunta-respondida';
 import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
 
+/**
+ * Componente de una pregunta y sus respuestas.
+ *
+ * @export
+ * @class PreguntaPartidaComponent
+ */
 @Component({
   selector: 'app-pregunta-partida',
   templateUrl: './pregunta-partida.component.html',

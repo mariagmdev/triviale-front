@@ -4,6 +4,13 @@ import { PreguntaRevision } from 'src/app/models/pregunta/pregunta-revision';
 import { NotificacionService } from 'src/app/services/notificacion/notificacion.service';
 import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
 
+/**
+ * Componente del listado de preguntas a revisar.
+ *
+ * @export
+ * @class PreguntasComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-preguntas',
   templateUrl: './preguntas.component.html',
@@ -27,6 +34,11 @@ export class PreguntasComponent implements OnInit {
     this.onRefrescar();
   }
 
+  /**
+   * Filtra las preguntas por su título y nombre de categoría si existe algún filtro.
+   *
+   * @memberof PreguntasComponent
+   */
   onCambioFiltro(): void {
     const filtro = this.filtro.trim();
 
@@ -66,6 +78,13 @@ export class PreguntasComponent implements OnInit {
     });
   }
 
+  /**
+   * Función de ordenación de columna de visibilidad.
+   *
+   * @param {PreguntaRevision} a
+   * @param {PreguntaRevision} b
+   * @memberof PreguntasComponent
+   */
   fnOrdenacionPublica = (a: PreguntaRevision, b: PreguntaRevision) =>
     a.esPublica ? (b.esPublica ? 0 : -1) : 1;
 }

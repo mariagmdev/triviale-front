@@ -1,5 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+/**
+ * Componente de resultado de la partida.
+ *
+ * @export
+ * @class ResultadoPartidaComponent
+ */
 @Component({
   selector: 'app-resultado-partida',
   templateUrl: './resultado-partida.component.html',

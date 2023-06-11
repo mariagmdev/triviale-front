@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { InicioComponent } from './components/inicio/inicio.component';
 
+// Rutas generales de la aplicación.
 const routes: Routes = [
   {
     path: 'jugar',

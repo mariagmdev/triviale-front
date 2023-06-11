@@ -4,6 +4,12 @@ import { environment } from 'src/environments/environment';
 import { Categoria } from 'src/app/models/categoria/categoria';
 import { Observable } from 'rxjs';
 
+/**
+ * Servicio que gestiona todo lo relacionado con la entidad de Categoría.
+ *
+ * @export
+ * @class CategoriaService
+ */
 @Injectable({ providedIn: 'root' })
 export class CategoriaService {
   private readonly api = environment.api;

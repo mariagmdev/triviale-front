@@ -3,6 +3,13 @@ import { Rol } from 'src/app/enums/rol/rol';
 import { Usuario } from 'src/app/models/usuario/usuario';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
+/**
+ * Componente de inicio de la aplicación.
+ *
+ * @export
+ * @class InicioComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.component.html',
@@ -16,7 +23,8 @@ export class InicioComponent implements OnInit {
 
   constructor(private authService: AuthService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    // Obtener el usuario iniciado.
     this.authService.usuario$.subscribe((usuario) => {
       this.usuario = usuario;
       this.esAdmin = usuario?.idRol === Rol.admin;

@@ -5,6 +5,13 @@ import { TipoNotificacion } from 'src/app/enums/tipo-notificacion/tipo-notificac
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { NotificacionService } from 'src/app/services/notificacion/notificacion.service';
 
+/**
+ * Componente de inicio de sesión
+ *
+ * @export
+ * @class InicioSesionComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-inicio-sesion',
   templateUrl: './inicio-sesion.component.html',
@@ -24,6 +31,7 @@ export class InicioSesionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Creamos el formulario.
     this.form = new FormGroup({
       nombre: new FormControl('', [
         Validators.required,
@@ -40,6 +48,7 @@ export class InicioSesionComponent implements OnInit {
   }
 
   onIniciarSesion() {
+    // Obtenemos el token para el captcha, verificamos y si va bien, iniciamos sesión.
     this.recaptchaV3Service.execute('importantAction').subscribe((token) => {
       this.authService.verificarRecaptcha(token).subscribe((esValido) => {
         if (esValido) {

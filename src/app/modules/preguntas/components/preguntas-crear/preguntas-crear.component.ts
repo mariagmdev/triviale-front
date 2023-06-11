@@ -22,6 +22,13 @@ import { CategoriaService } from 'src/app/services/categoria/categoria.service';
 import { NotificacionService } from 'src/app/services/notificacion/notificacion.service';
 import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
 
+/**
+ * Componente de creación de preguntas.
+ *
+ * @export
+ * @class PreguntasCrearComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-preguntas-crear',
   templateUrl: './preguntas-crear.component.html',
@@ -43,6 +50,7 @@ export class PreguntasCrearComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Creación del formulario.
     this.form = new FormGroup<PreguntaCreacionFG>(
       {
         titulo: new FormControl('', [Validators.required]),
@@ -62,13 +70,14 @@ export class PreguntasCrearComponent implements OnInit {
       );
     }
 
+    // Listar las categorías disponibles.
     this.categoriaService.listar().subscribe((categorias) => {
       this.categorias = categorias;
     });
   }
 
   onCrear(): void {
-    //Quitar espacios.
+    // Quitar espacios.
     const valorForm = this.form.value;
     this.form.patchValue({
       ...valorForm,
@@ -82,11 +91,13 @@ export class PreguntasCrearComponent implements OnInit {
       });
     });
     this.form.updateValueAndValidity();
-    //Salir si el formulario no es válido.
+
+    // Salir si el formulario no es válido.
     if (!this.form.valid) {
       return;
     }
-    //Generamos la pregunta a mandar para back.
+
+    // Generamos la pregunta a mandar para back.
     const valorFormValido = this.form.value;
     const pregunta: PreguntaCreacion = {
       titulo: valorFormValido.titulo!,
@@ -109,6 +120,14 @@ export class PreguntasCrearComponent implements OnInit {
     });
   }
 
+  /**
+   * Establece todas las respuestas como incorrectas, y establece la respuesta dada
+   * por su posición como correcta.
+   *
+   * @param {boolean} esCorrecta
+   * @param {number} i index de la respuesta
+   * @memberof PreguntasCrearComponent
+   */
   onCambioEsCorrecta(esCorrecta: boolean, i: number): void {
     const respuestasFormControl = this.form.controls.respuestas;
     respuestasFormControl.controls.forEach((respuesta) => {
@@ -121,6 +140,12 @@ export class PreguntasCrearComponent implements OnInit {
     this.form.updateValueAndValidity();
   }
 
+  /**
+   * Añadir el validador de requerido al nombre de categoría cuando se ha decidido crear una nueva,
+   * elimnar en caso contrario.
+   *
+   * @memberof PreguntasCrearComponent
+   */
   onCambioCategoria(): void {
     const catControl = this.form.controls.categoria;
     const idCategoria = this.form.value.idCategoria;
@@ -132,6 +157,17 @@ export class PreguntasCrearComponent implements OnInit {
     this.form.updateValueAndValidity();
   }
 
+  /**
+   * Función que verifica ciertos parámetros de la imagen subida:
+   * * Tipo jpg o png.
+   * * Tamaño máximo de 2MB.
+   *
+   * En caso de no cumplir uno de estos requisitos, se mostrará un error y se cancelará la subida.
+   *
+   * @param {NzUploadFile} file
+   * @param {NzUploadFile[]} _fileList
+   * @memberof PreguntasCrearComponent
+   */
   verificarImagen = (
     file: NzUploadFile,
     _fileList: NzUploadFile[]
@@ -160,6 +196,12 @@ export class PreguntasCrearComponent implements OnInit {
       observer.complete();
     });
 
+  /**
+   * Establece cambios según el estado actual de la subida de la imagen.
+   *
+   * @param {{ file: NzUploadFile }} info
+   * @memberof PreguntasCrearComponent
+   */
   onCambioSubida(info: { file: NzUploadFile }): void {
     switch (info.file.status) {
       case 'uploading':
@@ -183,6 +225,14 @@ export class PreguntasCrearComponent implements OnInit {
         break;
     }
   }
+
+  /**
+   * Función para comprobar si al menos hay una respuesta marcada como correcta.
+   *
+   * @private
+   * @return {ValidatorFn}
+   * @memberof PreguntasCrearComponent
+   */
   private unaRespuestaSeleccionadaValidator(): ValidatorFn {
     return (form: AbstractControl): ValidationErrors | null => {
       const valorForm = (form as FormGroup<PreguntaCreacionFG>).value;
