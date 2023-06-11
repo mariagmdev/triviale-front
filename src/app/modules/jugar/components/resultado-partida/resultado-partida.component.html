@@ -5,3 +5,12 @@
   Enhorabuena, has acabado la partida tienes un total de {{ puntos }} puntos.
 </h2>
 <app-ranking></app-ranking>
+
+<div nz-row class="mt-32" nzJustify="center">
+  <div nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8">
+    <a nz-button nzBlock nzType="primary" (click)="onJugar()">
+      <span nz-icon nzType="question"></span>
+      Volver a jugar
+    </a>
+  </div>
+</div>

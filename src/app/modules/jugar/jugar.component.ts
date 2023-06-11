@@ -12,8 +12,8 @@ import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
   styleUrls: ['./jugar.component.scss'],
 })
 export class JugarComponent implements OnInit {
-  indexPreguntaActual: number;
-  preguntas: Pregunta[];
+  indexPreguntaActual?: number;
+  preguntas?: Pregunta[];
   puntos = 0;
   estaPartidaTerminada = false;
   vidasRestantes: number = 3;
@@ -39,8 +39,8 @@ export class JugarComponent implements OnInit {
 
   onResponder(preguntaRespondida: PreguntaRespondida): void {
     this.preguntasRespondidas.push(preguntaRespondida);
-    if (this.indexPreguntaActual < this.preguntas.length - 1) {
-      this.indexPreguntaActual++;
+    if (this.indexPreguntaActual! < this.preguntas!.length - 1) {
+      this.indexPreguntaActual!++;
       if (preguntaRespondida.esCorrecta) {
         this.puntos += 10;
       } else {
@@ -58,10 +58,10 @@ export class JugarComponent implements OnInit {
         });
     }
   }
-  onCambioCategorias(categorias: Categoria[]): void {
+
+  onCambioCategorias(): void {
     this.totalPreguntasPorCategorias = 0;
-    this.categoriasSeleccionadas = categorias;
-    categorias.forEach((categoria) => {
+    this.categoriasSeleccionadas.forEach((categoria) => {
       this.totalPreguntasPorCategorias += categoria.cantidadPreguntas!;
     });
   }
@@ -78,6 +78,17 @@ export class JugarComponent implements OnInit {
         this.comenzarContador();
       });
   }
+
+  onReiniciarPartida(): void {
+    this.preguntas = undefined;
+    this.indexPreguntaActual = undefined;
+    this.puntos = 0;
+    this.vidasRestantes = 3;
+    this.categoriasSeleccionadas = [];
+    this.onCambioCategorias();
+    this.estaPartidaTerminada = false;
+  }
+
   private comenzarContador(): void {
     this.fechaComienzo = new Date().getTime();
     this.intervalo = setInterval(() => {

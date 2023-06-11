@@ -5,6 +5,7 @@
 .respuesta {
   padding: 20px;
   border: 1px solid white;
+  position: relative;
 }
 
 .respuestas {
@@ -13,4 +14,12 @@
 
 .respuesta:hover {
   border: 1px solid grey;
+}
+
+.letra-respuesta {
+  position: absolute;
+  top: 0;
+  left: 6px;
+  font-weight: bold;
+  font-size: 0.8rem;
 }

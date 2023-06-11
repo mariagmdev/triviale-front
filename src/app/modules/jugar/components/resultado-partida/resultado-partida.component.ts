@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-resultado-partida',
@@ -8,4 +8,9 @@ import { Component, Input } from '@angular/core';
 export class ResultadoPartidaComponent {
   @Input() puntos: number;
   @Input() vidasRestantes: number;
+  @Output() reiniciar = new EventEmitter<void>();
+
+  onJugar(): void {
+    this.reiniciar.emit();
+  }
 }

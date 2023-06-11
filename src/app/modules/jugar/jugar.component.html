@@ -9,18 +9,21 @@
       La o las categorías seleccionadas tienen un total de:
       <strong>{{ totalPreguntasPorCategorias }} preguntas.</strong>
     </p>
-    <nz-checkbox-wrapper
+
+    <nz-select
       class="w-100 mb-16"
-      (nzOnChange)="onCambioCategorias($event)"
+      nzMode="multiple"
+      nzPlaceHolder="Selecciona una o más categorías"
+      [nzAllowClear]="true"
+      [(ngModel)]="categoriasSeleccionadas"
+      (ngModelChange)="onCambioCategorias()"
     >
-      <div nz-row>
-        <div *ngFor="let categoria of categorias" nz-col nzSpan="8">
-          <label nz-checkbox [nzValue]="categoria">{{
-            categoria.nombre
-          }}</label>
-        </div>
-      </div>
-    </nz-checkbox-wrapper>
+      <nz-option
+        *ngFor="let categoria of categorias"
+        [nzLabel]="categoria.nombre"
+        [nzValue]="categoria"
+      ></nz-option>
+    </nz-select>
     <button
       nz-button
       nzType="primary"
@@ -33,28 +36,45 @@
 </ng-container>
 
 <ng-container
-  *ngIf="!estaPartidaTerminada && preguntas && preguntas[indexPreguntaActual]"
+  *ngIf="!estaPartidaTerminada && preguntas && preguntas[indexPreguntaActual!]"
 >
-  <nz-card>
+  <nz-card class="mb-16">
     <div nz-row>
-      <div nz-col [nzSpan]="6">
-        {{ preguntas[indexPreguntaActual].nombreCategoria }}
-        <div class="w-100" style="aspect-ratio: 1">
+      <div
+        nz-col
+        [nzXs]="{ order: 1, span: 12 }"
+        [nzMd]="{ order: 0, span: 8 }"
+        [nzSpan]="6"
+      >
+        <div class="fw-bold">
+          {{ preguntas[indexPreguntaActual!].nombreCategoria }}
+        </div>
+        <div style="width: 100px; aspect-ratio: 1">
           <img
             class="w-100"
-            [src]="preguntas[indexPreguntaActual].imgCategoria"
+            [src]="preguntas[indexPreguntaActual!].imgCategoria"
             alt="Imagen categoría"
           />
         </div>
       </div>
-      <div nz-col class="text-center" [nzSpan]="12">
-        <h4>Pregunta {{ indexPreguntaActual + 1 }}/{{ preguntas.length }}</h4>
+      <div
+        nz-col
+        class="text-center"
+        [nzXs]="{ order: 0, span: 24 }"
+        [nzMd]="{ order: 1, span: 8 }"
+      >
+        <h2>Pregunta {{ indexPreguntaActual! + 1 }}/{{ preguntas.length }}</h2>
         <div>{{ milisegundos | date : "mm:ss" : "UTC" }}</div>
       </div>
-      <div nz-col class="text-end" [nzSpan]="6">
-        Puntuación: {{ puntos }}
+      <div
+        nz-col
+        class="text-end"
+        [nzXs]="{ order: 2, span: 12 }"
+        [nzMd]="{ order: 2, span: 8 }"
+      >
+        <div class="fw-bold mb-24">Puntuación: {{ puntos }}</div>
         <div class="text-end">
-          <div nz-row [nzGutter]="8">
+          <div nz-row [nzGutter]="8" nzJustify="end">
             <div nz-col>
               <span
                 class="vida"
@@ -86,8 +106,8 @@
   </nz-card>
   <nz-card>
     <app-pregunta-partida
-      [pregunta]="preguntas[indexPreguntaActual]"
-      [indexPregunta]="indexPreguntaActual"
+      [pregunta]="preguntas[indexPreguntaActual!]"
+      [indexPregunta]="indexPreguntaActual!"
       (preguntaRespondida)="onResponder($event)"
     ></app-pregunta-partida>
   </nz-card>
@@ -96,4 +116,5 @@
   *ngIf="estaPartidaTerminada"
   [puntos]="puntos"
   [vidasRestantes]="vidasRestantes"
+  (reiniciar)="onReiniciarPartida()"
 ></app-resultado-partida>

@@ -1,13 +1,22 @@
 <ng-container *ngIf="pregunta">
   <h2 class="mb-16">{{ indexPregunta + 1 }}. {{ pregunta.titulo }}</h2>
   <div nz-row class="respuestas" [nzGutter]="[32, 32]">
-    <div *ngFor="let respuesta of pregunta.respuestas" nz-col [nzSpan]="12">
+    <div
+      *ngFor="let respuesta of pregunta.respuestas; index as i"
+      nz-col
+      [nzXs]="24"
+      [nzLg]="12"
+    >
       <div
         class="rounded shadow respuesta pe-cursor-pointer"
         (click)="onResponder(respuesta.id)"
         role="button"
       >
         {{ respuesta.titulo }}
+        <span *ngIf="i === 0" class="text-primary letra-respuesta">A</span>
+        <span *ngIf="i === 1" class="text-primary letra-respuesta">B</span>
+        <span *ngIf="i === 2" class="text-primary letra-respuesta">C</span>
+        <span *ngIf="i === 3" class="text-primary letra-respuesta">D</span>
       </div>
     </div>
   </div>
