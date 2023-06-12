@@ -75,6 +75,7 @@ export class PreguntasComponent implements OnInit {
     this.preguntaService.listar().subscribe((preguntas) => {
       this.preguntas = preguntas;
       this.preguntasFiltradas = preguntas;
+      this.onCambioFiltro();
     });
   }
 
