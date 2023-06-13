@@ -37,9 +37,9 @@ export class AuthService {
     if (usuarioStr && fechaStr) {
       const fecha = new Date(fechaStr);
       const fechaAhora = new Date();
-      // Comprobamos que la sesión lleve menos de 30 minutos.
+      // Comprobamos que la sesión lleve menos de 20 minutos.
       // Si lleva más se entiende que ha expirado y limpiamos los datos.
-      if (fechaAhora.getTime() < fecha.getTime() + 30 * 60 * 1000) {
+      if (fechaAhora.getTime() < fecha.getTime() + 20 * 60 * 1000) {
         const usuario = JSON.parse(usuarioStr);
         this.usuario$.next(usuario);
       } else {
