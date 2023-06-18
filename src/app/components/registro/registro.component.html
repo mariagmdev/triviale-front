@@ -4,43 +4,85 @@
   (nzOnCancel)="onCancelar()"
 >
   <ng-container *nzModalContent>
-    <form nz-form [formGroup]="form">
+    <form nz-form nzLayout="vertical" [formGroup]="form">
       <nz-form-item>
-        <nz-form-control>
+        <nz-form-label nzFor="nombreR" nzRequired>Nombre:</nz-form-label>
+        <nz-form-control [nzErrorTip]="errorNombreTpl">
           <nz-input-group nzPrefixIcon="user">
             <input
               nz-input
+              id="nombreR"
               formControlName="nombre"
               type="text"
               class="form-control"
               placeholder="Usuario"
             />
+            <ng-template #errorNombreTpl let-control>
+              <ng-container *ngIf="control.hasError('required')"
+                >Debe especificar un nombre</ng-container
+              >
+              <ng-container *ngIf="control.hasError('minlength')">
+                El nombre tiene una longitud mínima de 4 caracteres
+              </ng-container>
+              <ng-container *ngIf="control.hasError('maxlength')">
+                El nombre tiene una longitud máxima de 32 caracteres
+              </ng-container>
+            </ng-template>
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control>
+        <nz-form-label nzFor="claveR" nzRequired>Contraseña: </nz-form-label>
+        <nz-form-control [nzErrorTip]="errorClaveTpl">
           <nz-input-group nzPrefixIcon="lock">
             <input
               nz-input
+              id="claveR"
               formControlName="clave"
               type="password"
               class="form-control"
               placeholder="Contraseña"
             />
+            <ng-template #errorClaveTpl let-control>
+              <ng-container *ngIf="control.hasError('required')"
+                >Debe especificar una contraseña</ng-container
+              >
+              <ng-container *ngIf="control.hasError('minlength')">
+                La contraseña tiene una longitud mínima de 6 caracteres
+              </ng-container>
+              <ng-container *ngIf="control.hasError('maxlength')">
+                La contraseña tiene una longitud máxima de 16 caracteres
+              </ng-container>
+              <ng-container *ngIf="control.hasError('pattern')">
+                La contraseña puede contener todos los caracteres especiales,
+                numeros y letras mayúsculas y minúsculas
+              </ng-container>
+            </ng-template>
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control>
+        <nz-form-label nzFor="confirmarContraR" nzRequired
+          >Confirmar contraseña:</nz-form-label
+        >
+        <nz-form-control [nzErrorTip]="errorClave2Tpl">
           <nz-input-group nzPrefixIcon="lock">
             <input
               nz-input
+              id="confirmarContraR"
               formControlName="clave2"
               type="password"
               class="form-control"
               placeholder="Contraseña"
             />
+            <ng-template #errorClave2Tpl let-control>
+              <ng-container *ngIf="control.hasError('required')"
+                >Debe especificar una contraseña</ng-container
+              >
+              <ng-container *ngIf="control.hasError('clavesNoConcuerdan')">
+                Las contraseñas deben ser iguales
+              </ng-container>
+            </ng-template>
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>

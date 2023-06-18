@@ -39,23 +39,23 @@ export class RegistroComponent implements OnInit {
 
   ngOnInit(): void {
     // Creamos el formulario.
-    this.form = new FormGroup(
-      {
-        nombre: new FormControl('', [
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(32),
-        ]),
-        clave: new FormControl('', [
-          Validators.required,
-          Validators.minLength(6),
-          Validators.maxLength(16),
-          Validators.pattern(/\.*/),
-        ]),
-        clave2: new FormControl('', [Validators.required]),
-      },
-      [this.claveConcuerdanValidator()]
-    );
+    this.form = new FormGroup({
+      nombre: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(32),
+      ]),
+      clave: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(16),
+        Validators.pattern(/\.*/),
+      ]),
+      clave2: new FormControl('', [
+        Validators.required,
+        this.claveConcuerdanValidator,
+      ]),
+    });
   }
 
   onRegistrarse() {
@@ -90,20 +90,16 @@ export class RegistroComponent implements OnInit {
    * Función para comprobar si ambas claves del formulario coinciden.
    *
    * @private
-   * @return {ValidatorFn}
    * @memberof RegistroComponent
    */
-  private claveConcuerdanValidator(): ValidatorFn {
-    return (form: AbstractControl): ValidationErrors | null => {
-      const valorForm = form.value;
-
-      if (!valorForm.clave) {
-        return null;
-      }
-
-      return valorForm.clave != valorForm.clave2
-        ? { clavesNoConcuerdan: true }
-        : null;
-    };
-  }
+  private claveConcuerdanValidator = (
+    control: FormControl<string>
+  ): ValidationErrors => {
+    if (!control.value) {
+      return { required: true };
+    } else if (control.value !== this.form.controls['clave'].value) {
+      return { clavesNoConcuerdan: true };
+    }
+    return {};
+  };
 }
