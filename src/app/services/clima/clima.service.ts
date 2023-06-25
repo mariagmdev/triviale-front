@@ -12,8 +12,8 @@ import { Clima } from 'src/app/models/clima/clima';
  */
 @Injectable({ providedIn: 'root' })
 export class ClimaService {
-  private readonly codigoProvincia: number = 19;
-  private readonly codigoMunicipio: number = 19046;
+  private readonly codigoProvincia: number = 19; // Guadalajara
+  private readonly codigoMunicipio: number = 19046; // Azuqueca de Henares
   private readonly api = environment.weatherApi;
   private readonly imgApi = environment.weatherImgApi;
 
@@ -26,6 +26,7 @@ export class ClimaService {
       )
       .pipe(
         tap((clima) => {
+          // Procesar la imagen del clima. Esto se ejecutará cuando exista unas suscripción a este observable.
           clima.imagen = `${this.imgApi}/${clima.stateSky.id}_g.png`;
         })
       );
