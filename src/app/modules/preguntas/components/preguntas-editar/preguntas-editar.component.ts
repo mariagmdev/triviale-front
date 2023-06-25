@@ -65,11 +65,6 @@ export class PreguntasEditarComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     // Crear formulario.
     this.inicializarForm();
-
-    // Listar categorías disponibles.
-    this.categoriaService.listar().subscribe((categorias) => {
-      this.categorias = categorias;
-    });
   }
 
   /**
@@ -81,7 +76,12 @@ export class PreguntasEditarComponent implements OnInit, OnChanges {
    */
   ngOnChanges(changes: SimpleChanges): void {
     // Escuchamos los cambios y inicializamos form y datos cuando obtengamos un id.
-    if (changes['id'] && this.id) {
+    if (changes['esVisible'] && this.esVisible && this.id) {
+      // Listar categorías disponibles.
+      this.categoriaService.listar().subscribe((categorias) => {
+        this.categorias = categorias;
+      });
+
       this.pregunta = undefined;
       this.inicializarForm();
       this.preguntaService.obtener(this.id).subscribe((pregunta) => {
@@ -181,8 +181,6 @@ export class PreguntasEditarComponent implements OnInit, OnChanges {
     } else {
       catControl.removeValidators(Validators.required);
     }
-    catControl.setValue(null);
-    this.imgCategoria = undefined;
     this.form.updateValueAndValidity();
   }
 
