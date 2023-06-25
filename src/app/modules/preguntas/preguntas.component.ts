@@ -40,7 +40,7 @@ export class PreguntasComponent implements OnInit {
    * @memberof PreguntasComponent
    */
   onCambioFiltro(): void {
-    const filtro = this.filtro.trim();
+    const filtro = this.filtro?.trim();
 
     if (!filtro) {
       this.preguntasFiltradas = this.preguntas;

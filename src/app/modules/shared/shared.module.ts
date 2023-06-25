@@ -34,8 +34,9 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { RankingComponent } from 'src/app/components/ranking/ranking.component';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { PrimeraMayusPipe } from './pipes/primera-mayus.pipe';
 
-const triviale = [RankingComponent];
+const triviale = [RankingComponent, PrimeraMayusPipe];
 const angular = [
   CommonModule,
   ReactiveFormsModule,

@@ -24,14 +24,39 @@
         [nzValue]="categoria"
       ></nz-option>
     </nz-select>
-    <button
-      nz-button
-      nzType="primary"
-      [disabled]="totalPreguntasPorCategorias < 15"
-      (click)="onComenzarPartida()"
-    >
-      Comenzar partida
-    </button>
+    <nz-button-group>
+      <button
+        nz-button
+        nzType="primary"
+        [disabled]="totalPreguntasPorCategorias < 15"
+        (click)="onComenzarPartida()"
+      >
+        Comenzar partida
+      </button>
+      <button
+        nz-button
+        nz-dropdown
+        nzType="primary"
+        [disabled]="totalPreguntasPorCategorias < 15"
+        [nzDropdownMenu]="menuExportar"
+        nzPlacement="bottomRight"
+      >
+        <span nz-icon nzType="ellipsis"></span>
+      </button>
+      <nz-dropdown-menu #menuExportar="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item (click)="onExportar('xml')">Exportar como XML</li>
+          <li nz-menu-item (click)="onExportar('json')">Exportar como JSON</li>
+        </ul>
+      </nz-dropdown-menu>
+    </nz-button-group>
+    <span
+      nz-icon
+      nz-tooltip
+      nzType="question-circle"
+      nzTooltipTitle="Puede exportar las preguntas de las categorías seleccionadas como XML y JSON"
+      class="ms-16"
+    ></span>
   </nz-card>
 </ng-container>
 

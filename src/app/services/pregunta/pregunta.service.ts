@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PreguntaCreacion } from 'src/app/models/pregunta/pregunta-creacion';
@@ -21,6 +21,7 @@ export class PreguntaService {
   obtenerPreguntasPartida(idCategorias: number[]): Observable<Pregunta[]> {
     return this.http.post<Pregunta[]>(`${this.api}/preguntas.php`, {
       idCategorias: idCategorias,
+      preguntasPartida: true,
     });
   }
 
@@ -60,5 +61,19 @@ export class PreguntaService {
       esPublica: esPublica,
       visibilidad: true,
     });
+  }
+  exportar(
+    idCategorias: number[],
+    tipo: 'xml' | 'json'
+  ): Observable<HttpResponse<Blob>> {
+    return this.http.post<Blob>(
+      `${this.api}/preguntas.php`,
+      {
+        idCategorias: idCategorias,
+        exportar: true,
+        tipo: tipo,
+      },
+      { responseType: 'blob' as 'json', observe: 'response' }
+    );
   }
 }

@@ -4,7 +4,15 @@
 <h2 *ngIf="vidasRestantes > 0" class="text-center">
   Enhorabuena, has acabado la partida tienes un total de {{ puntos }} puntos.
 </h2>
-<app-ranking></app-ranking>
+
+<div class="mt-48">
+  <h2 class="text-center">Ranking 🏅</h2>
+  <div nz-row nzJustify="center" class="pt-16">
+    <div nz-col>
+      <app-ranking></app-ranking>
+    </div>
+  </div>
+</div>
 
 <div nz-row class="mt-32" nzJustify="center">
   <div nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8">
@@ -13,4 +21,11 @@
       Volver a jugar
     </a>
   </div>
+</div>
+
+<div *ngIf="actividad" class="mt-32 mb-32">
+  <h2 class="mb-16 text-center">Por si no te apetece echar otra podrías...</h2>
+  <h4 class="text-center fs-cursive">
+    {{ actividad.activity }}
+  </h4>
 </div>

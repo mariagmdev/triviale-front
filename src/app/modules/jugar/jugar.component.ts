@@ -5,7 +5,6 @@ import { PreguntaRespondida } from 'src/app/models/pregunta/pregunta-respondida'
 import { CategoriaService } from 'src/app/services/categoria/categoria.service';
 import { PuntuacionService } from 'src/app/services/puntuacion/puntuacion.service';
 import { PreguntaService } from 'src/app/services/pregunta/pregunta.service';
-
 /**
  * Componente de jugar una partida.
  *
@@ -30,7 +29,6 @@ export class JugarComponent implements OnInit {
   categoriasSeleccionadas: Categoria[];
   totalPreguntasPorCategorias: number = 0;
   private intervalo: NodeJS.Timer;
-
   private preguntasRespondidas: PreguntaRespondida[] = [];
 
   constructor(
@@ -120,6 +118,27 @@ export class JugarComponent implements OnInit {
     this.onCambioCategorias();
     this.preguntasRespondidas = [];
     this.estaPartidaTerminada = false;
+  }
+
+  onExportar(tipo: 'xml' | 'json'): void {
+    const idCategorias = this.categoriasSeleccionadas.map(
+      (categoria) => categoria.id
+    );
+    this.preguntaService.exportar(idCategorias, tipo).subscribe((response) => {
+      const nombreArchivo = response.headers
+        .get('Content-Disposition')!
+        .split('filename=')[1];
+      const blob = response.body;
+      const tipo = blob!.type;
+      const dataBinario = [blob!];
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(
+        new Blob(dataBinario, { type: tipo })
+      );
+      link.setAttribute('download', nombreArchivo);
+      document.body.appendChild(link);
+      link.click();
+    });
   }
 
   private comenzarContador(): void {
